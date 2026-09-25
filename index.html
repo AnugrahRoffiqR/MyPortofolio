@@ -2,10 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- encoding karakter -->
     <meta charset="UTF-8" />
+    <!-- agar tampilan responsif di HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- judul di tab browser -->
     <title>Portfolio | Anugrah Roffiq</title>
+    <!-- file CSS utama -->
     <link rel="stylesheet" href="style.css" />
+    <!-- library ikon Boxicons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 
@@ -13,6 +18,7 @@
 
     <!-- HEADER DAN NAVIGASI -->
     <header class="header">
+        <!-- logo / nama, klik untuk kembali ke home -->
         <a href="#home" class="logo">Anugrah <span>Roffiq R</span></a>
 
         <!-- ikon menu mobile -->
@@ -32,22 +38,27 @@
     <!-- ================= HOME SECTION ================= -->
     <section class="home" id="home">
 
+        <!-- teks perkenalan -->
         <div class="home-content">
 
+            <!-- sapaan dan nama (diberi efek mengetik) -->
             <h1>
                 Hi, It's<br>
                 <span class="typing-text">Anugrah</span>
             </h1>
 
+            <!-- role yang berganti-ganti (diatur oleh script.js) -->
             <h3>
                 I'm a <span class="typing-role">Frontend Developer</span>
             </h3>
 
+            <!-- deskripsi singkat -->
             <p>
                 Saya belajar dan mengembangkan kemampuan di bidang Frontend Development
                 serta terus membuat berbagai project dengan teknologi modern.
             </p>
 
+            <!-- moto hidup (diberi efek mengetik berulang) -->
             <p class="life-motto">
                 <strong>Moto Hidup :</strong>
                 <span class="typing-motto">
@@ -57,11 +68,13 @@
 
             <!-- info lokasi dan timezone -->
             <div class="social-icons">
+                <!-- lokasi -->
                 <a href="#" class="info-icon" title="Location: Indonesia" aria-label="Location: Indonesia">
                     <i class="bx bx-map"></i>
                     <span>Indonesia</span>
                 </a>
 
+                <!-- jam GMT+7 (diperbarui setiap detik oleh script.js) -->
                 <a href="#" class="info-icon" title="Timezone: GMT+7" aria-label="Timezone: GMT+7">
                     <i class="bx bx-time-five"></i>
                     <span class="timezone-value">GMT+7</span>
@@ -89,6 +102,7 @@
 
         <div class="about-container">
 
+            <!-- judul section -->
             <h2 class="about-heading">
                 <span>About</span>
                 <span class="main-color">Me</span>
@@ -102,6 +116,7 @@
             <!-- teks tentang saya -->
             <div class="about-content">
 
+                <!-- paragraf tentang sekolah -->
                 <p>
                     Saya adalah pelajar di smk skill village islamic school. Sekolah Islam
                     Skill Village adalah sekolah yang berbasis pada model pesantren
@@ -110,6 +125,7 @@
                     persatuan.
                 </p>
 
+                <!-- paragraf tentang minat (warna biru) -->
                 <p class="about-highlight">
                     Saya pelajar di smk skill village islamic school yang memiliki minat di
                     bidang teknologi, terutama dalam pembuatan website, UI/UX, dan
@@ -118,23 +134,28 @@
                     serta mencoba hal-hal baru.
                 </p>
 
+                <!-- tagline -->
                 <p class="about-tagline">
                     <span class="tagline-white">Keep learning,</span>
                     <span class="tagline-blue">keep creating.</span>
                 </p>
 
+                <!-- info singkat: lokasi, status, jurusan -->
                 <div class="about-info">
 
+                    <!-- lokasi -->
                     <div class="info-item">
                         <i class="bx bxs-map-pin"></i>
                         <span class="info-text">Indo<span>nesia</span></span>
                     </div>
 
+                    <!-- status -->
                     <div class="info-item">
                         <i class="bx bxs-graduation"></i>
                         <span class="info-text">Stud<span>ent</span></span>
                     </div>
 
+                    <!-- jurusan -->
                     <div class="info-item">
                         <i class="bx bx-laptop"></i>
                         <span class="info-text">PP<span>LG</span></span>
@@ -142,6 +163,7 @@
 
                 </div>
 
+                <!-- tombol menuju section lain -->
                 <div class="btn-group">
                     <a href="#skills" class="btn btn-primary">Skill</a>
                     <a href="#contact" class="btn btn-outline">Contact</a>
@@ -157,10 +179,13 @@
     <!-- ================= SKILLS SECTION ================= -->
     <section class="skill-toolkit" id="skills">
 
+        <!-- judul section -->
         <h2 class="heading">Ke<span class="main-color">ahlian</span></h2>
 
+        <!-- daftar kartu keahlian -->
         <div class="skill-grid">
 
+            <!-- kartu HTML -->
             <article class="skill-card">
                 <span class="skill-index">01</span>
                 <i class="bx bxl-html5"></i>
@@ -171,6 +196,7 @@
                 <div class="skill-line"></div>
             </article>
 
+            <!-- kartu CSS -->
             <article class="skill-card">
                 <span class="skill-index">02</span>
                 <i class="bx bxl-css3"></i>
@@ -181,6 +207,7 @@
                 <div class="skill-line"></div>
             </article>
 
+            <!-- kartu JavaScript -->
             <article class="skill-card">
                 <span class="skill-index">03</span>
                 <i class="bx bxl-javascript"></i>
@@ -191,6 +218,7 @@
                 <div class="skill-line"></div>
             </article>
 
+            <!-- kartu UI/UX -->
             <article class="skill-card">
                 <span class="skill-index">04</span>
                 <i class="bx bxl-figma"></i>
@@ -201,6 +229,7 @@
                 <div class="skill-line"></div>
             </article>
 
+            <!-- kartu GitHub -->
             <article class="skill-card">
                 <span class="skill-index">05</span>
                 <i class="bx bxl-github"></i>
@@ -213,6 +242,7 @@
 
         </div>
 
+        <!-- tombol navigasi ke section berikutnya -->
         <div class="skill-nav">
             <a href="#projects" class="skill-nav-btn active">Project</a>
             <a href="#contact" class="skill-nav-btn">Contact</a>
@@ -224,12 +254,15 @@
     <!-- ================= PROJECTS SECTION ================= -->
     <section class="project-toolkit" id="projects">
 
+        <!-- judul section -->
         <h2 class="project-heading">
             <span class="main-color">Proj</span>ect
         </h2>
 
+        <!-- daftar kartu project (klik untuk membuka di tab baru) -->
         <div class="project-grid">
 
+            <!-- project 1: Landing Page Store -->
             <a href="https://anugrahroffiqr.github.io/MyLandingPageStore/" target="_blank" rel="noopener noreferrer"
                 class="project-card-link">
                 <article class="project-card">
@@ -246,6 +279,7 @@
                 </article>
             </a>
 
+            <!-- project 2: Kalkulator -->
             <a href="https://anugrahroffiqr.github.io/MyCalculator/" target="_blank" rel="noopener noreferrer"
                 class="project-card-link">
                 <article class="project-card">
@@ -262,6 +296,7 @@
                 </article>
             </a>
 
+            <!-- project 3: Halaman Login -->
             <a href="https://anugrahroffiqr.github.io/MyHalamanLogin/" target="_blank" rel="noopener noreferrer"
                 class="project-card-link">
                 <article class="project-card">
@@ -280,6 +315,7 @@
 
         </div>
 
+        <!-- tombol menuju contact -->
         <div class="project-nav">
             <a href="#contact" class="project-nav-btn">Contact</a>
         </div>
@@ -290,31 +326,41 @@
     <!-- ================= CONTACT SECTION ================= -->
     <section class="contact" id="contact">
 
+        <!-- judul section -->
         <h2 class="contact-heading">
             <span class="main-color">Contact</span> Me
         </h2>
 
+        <!-- form kontak, dikirim ke email lewat layanan FormSubmit -->
         <form action="https://formsubmit.co/ajax/nugi5555.a@gmail.com" method="POST" id="contact-form">
 
             <!-- agar tidak ada captcha -->
             <input type="hidden" name="_captcha" value="false">
 
+            <!-- kolom kiri: data pengirim -->
             <div class="input-group">
 
+                <!-- nama lengkap (wajib) -->
                 <input type="text" name="name" placeholder="Full Name" required />
 
+                <!-- email (wajib) -->
                 <input type="email" name="email" placeholder="Email" required />
 
+                <!-- nomor telepon (opsional) -->
                 <input type="tel" name="phone" placeholder="Phone Number" />
 
+                <!-- subjek pesan (opsional) -->
                 <input type="text" name="subject" placeholder="Subject" />
 
             </div>
 
+            <!-- kolom kanan: isi pesan dan tombol kirim -->
             <div class="input-group-2">
 
+                <!-- isi pesan (wajib) -->
                 <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
 
+                <!-- tombol kirim -->
                 <input type="submit" value="Send Message" class="btn" id="submit-btn" />
 
             </div>
@@ -330,19 +376,23 @@
         <!-- media sosial -->
         <div class="social-icons">
 
+            <!-- GitHub -->
             <a href="https://github.com/AnugrahRoffiqR" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <i class="bx bxl-github"></i>
             </a>
 
+            <!-- TikTok -->
             <a href="https://www.tiktok.com/@velraithe_" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <i class="bx bxl-tiktok"></i>
             </a>
 
+            <!-- Instagram -->
             <a href="https://www.instagram.com/cynicc___/" target="_blank" rel="noopener noreferrer"
                 aria-label="Instagram">
                 <i class="bx bxl-instagram-alt"></i>
             </a>
 
+            <!-- Twitter (belum ada link) -->
             <a href="#" aria-label="Twitter">
                 <i class="bx bxl-twitter"></i>
             </a>

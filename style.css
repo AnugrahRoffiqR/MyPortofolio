@@ -2,6 +2,7 @@
    RESET DASAR
 ================================ */
 
+/* reset semua elemen: hapus margin/padding bawaan dan atur font default */
 * {
     margin: 0;
     padding: 0;
@@ -13,11 +14,13 @@
     font-family: "Poppins", sans-serif;
 }
 
+/* ukuran dasar font (1rem = 60% dari 16px) dan cegah scroll horizontal */
 html {
     font-size: 60%;
     overflow-x: hidden;
 }
 
+/* variabel warna utama website */
 :root {
     --bg-color: #080808;
     --second-bg-color: #0c131d;
@@ -25,6 +28,7 @@ html {
     --main-color: skyblue;
 }
 
+/* warna latar dan teks halaman */
 body {
     background: var(--bg-color);
     color: var(--text-color);
@@ -35,6 +39,7 @@ body {
    HEADER & NAVBAR
 ================================ */
 
+/* header menempel di atas dengan efek blur transparan */
 .header {
     position: fixed;
     width: 100%;
@@ -49,6 +54,7 @@ body {
     z-index: 100;
 }
 
+/* ikon hamburger, disembunyikan di layar besar */
 #menu-icon {
     font-size: 3.6rem;
     color: var(--main-color);
@@ -56,6 +62,7 @@ body {
     cursor: pointer;
 }
 
+/* logo / nama di pojok kiri header */
 .logo {
     font-size: 3rem;
     color: white;
@@ -64,14 +71,17 @@ body {
     transition: 0.3s ease;
 }
 
+/* logo membesar saat disorot */
 .logo:hover {
     transform: scale(1.1);
 }
 
+/* semua span diberi warna utama */
 span {
     color: var(--main-color);
 }
 
+/* link di navbar */
 .navbar a {
     font-size: 1.8rem;
     color: var(--text-color);
@@ -81,6 +91,7 @@ span {
     transition: 0.3s ease;
 }
 
+/* link navbar saat disorot atau sedang aktif */
 .navbar a:hover,
 .navbar a.active {
     border-bottom: 3px solid var(--main-color);
@@ -92,6 +103,7 @@ span {
    SECTION
 ================================ */
 
+/* jarak dan tinggi minimal setiap section */
 section {
     min-height: 100vh;
     padding: 10rem 12%;
@@ -102,6 +114,7 @@ section {
    HOME
 ================================ */
 
+/* layout home: teks di kiri, foto di kanan */
 .home {
     display: flex;
     align-items: center;
@@ -109,6 +122,7 @@ section {
     gap: 8rem;
 }
 
+/* wadah teks perkenalan */
 .home-content {
     display: flex;
     flex-direction: column;
@@ -117,6 +131,7 @@ section {
     max-width: 60rem;
 }
 
+/* judul besar "Hi, It's Anugrah" */
 .home-content h1 {
     font-size: 7rem;
     font-weight: 700;
@@ -126,17 +141,20 @@ section {
     text-align: left;
 }
 
+/* teks role */
 .home-content h3 {
     font-size: 3.6rem;
     margin: 1rem 0;
 }
 
+/* paragraf deskripsi */
 .home-content p {
     font-size: 1.6rem;
     font-weight: 400;
     line-height: 1.8;
 }
 
+/* baris moto hidup */
 .home-content .life-motto {
     font-size: 1.8rem;
     margin-top: 0.8rem;
@@ -148,12 +166,14 @@ section {
     width: 100%;
 }
 
+/* label "Moto Hidup :" */
 .home-content .life-motto strong {
     color: var(--main-color);
     flex-shrink: 0;
     margin-right: 0.5rem;
 }
 
+/* teks moto yang diketik */
 .typing-motto {
     display: inline;
     min-width: 0;
@@ -166,6 +186,7 @@ section {
    EFEK KURSOR MENGETIK
 ================================ */
 
+/* kursor berkedip saat teks sedang diketik */
 .typing-text.is-typing,
 .typing-role.is-typing,
 .typing-motto.is-typing,
@@ -176,12 +197,14 @@ section {
     animation: blink-cursor 0.7s step-end infinite;
 }
 
+/* animasi kedip kursor */
 @keyframes blink-cursor {
     50% {
         border-color: transparent;
     }
 }
 
+/* matikan animasi kursor jika pengguna memilih kurangi animasi */
 @media (prefers-reduced-motion: reduce) {
     .typing-text.is-typing,
     .typing-role.is-typing,
@@ -196,6 +219,7 @@ section {
    FOTO HOME
 ================================ */
 
+/* foto profil bulat dengan cahaya */
 .home-img img {
     width: 32vw;
     height: 32vw;
@@ -205,6 +229,7 @@ section {
     transition: 0.4s ease-in-out;
 }
 
+/* cahaya foto makin terang saat disorot */
 .home-img img:hover {
     box-shadow:
         0 0 25px var(--main-color),
@@ -217,6 +242,7 @@ section {
    SOCIAL ICON & INFO
 ================================ */
 
+/* ikon bulat bergaris (sosial media / info) */
 .social-icons a {
     display: inline-flex;
     justify-content: center;
@@ -231,6 +257,7 @@ section {
     transition: 0.3s ease;
 }
 
+/* efek ikon saat disorot */
 .social-icons a:hover {
     color: var(--text-color);
     background-color: var(--main-color);
@@ -238,6 +265,7 @@ section {
     box-shadow: 0 0 25px var(--main-color);
 }
 
+/* versi ikon berbentuk pil (lokasi & jam) */
 .social-icons a.info-icon {
     gap: 0.8rem;
     padding: 1rem 1.5rem;
@@ -246,6 +274,7 @@ section {
     font-weight: 600;
 }
 
+/* ukuran ikon di dalam pil info */
 .social-icons a.info-icon i {
     font-size: 2.6rem;
 }
@@ -255,11 +284,13 @@ section {
    BUTTON
 ================================ */
 
+/* wadah tombol berjajar */
 .btn-group {
     display: flex;
     gap: 1.5rem;
 }
 
+/* tombol utama biru bercahaya */
 .btn {
     display: inline-block;
     padding: 1rem 3rem;
@@ -273,6 +304,7 @@ section {
     transition: 0.3s ease-in-out;
 }
 
+/* tombol membesar saat disorot */
 .btn:hover {
     transform: scale(1.05);
     box-shadow:
@@ -280,6 +312,7 @@ section {
         0 0 50px var(--main-color);
 }
 
+/* tombol kedua dibuat gaya outline */
 .btn-group a:nth-of-type(2) {
     background-color: black;
     color: var(--main-color);
@@ -287,6 +320,7 @@ section {
     box-shadow: 0 0 25px transparent;
 }
 
+/* tombol outline menjadi penuh saat disorot */
 .btn-group a:nth-of-type(2):hover {
     box-shadow: 0 0 25px var(--main-color);
     background-color: var(--main-color);
@@ -298,10 +332,12 @@ section {
    ABOUT
 ================================ */
 
+/* kelas bantu untuk teks berwarna utama */
 .main-color {
     color: var(--main-color);
 }
 
+/* section about */
 .about {
     display: flex;
     flex-direction: column;
@@ -311,6 +347,7 @@ section {
     padding-top: 12rem;
 }
 
+/* judul "About Me" */
 .about-heading {
     grid-column: 2;
     grid-row: 1;
@@ -322,14 +359,17 @@ section {
     line-height: 1.1;
 }
 
+/* kata "About" berwarna putih */
 .about-heading span:first-child {
     color: var(--text-color);
 }
 
+/* kata "Me" berwarna biru */
 .about-heading .main-color {
     color: var(--main-color);
 }
 
+/* grid about: foto di kiri, judul & teks di kanan */
 .about-container {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -340,17 +380,20 @@ section {
     max-width: 120rem;
 }
 
+/* posisi foto about di kolom kiri */
 .about-img {
     grid-column: 1;
     grid-row: 1 / span 2;
     align-self: center;
 }
 
+/* posisi teks about di kolom kanan */
 .about-content {
     grid-column: 2;
     grid-row: 2;
 }
 
+/* foto about bulat dengan cahaya lembut */
 .about-img img {
     display: block;
     width: 34vw;
@@ -368,6 +411,7 @@ section {
     transition: 0.4s ease-in-out;
 }
 
+/* cahaya foto about saat disorot */
 .about-img img:hover {
     box-shadow:
         0 0 25px var(--main-color),
@@ -375,10 +419,12 @@ section {
         0 0 100px var(--main-color);
 }
 
+/* lebar maksimal teks about */
 .about-content {
     max-width: 62rem;
 }
 
+/* paragraf about */
 .about-content p {
     font-size: 1.8rem;
     line-height: 1.6;
@@ -386,10 +432,12 @@ section {
     color: var(--text-color);
 }
 
+/* paragraf yang disorot berwarna biru */
 .about-content p.about-highlight {
     color: var(--main-color);
 }
 
+/* tagline "Keep learning, keep creating." */
 .about-content .about-tagline {
     font-size: 1.6rem;
     font-weight: 700;
@@ -397,6 +445,7 @@ section {
     margin: 4rem 0 2.5rem;
 }
 
+/* kata-kata tagline dengan efek glow */
 .about-tagline span {
     position: relative;
     display: inline-block;
@@ -406,6 +455,7 @@ section {
         0 0 20px rgba(135, 206, 235, 0.25);
 }
 
+/* garis bawah tagline */
 .about-tagline span::after {
     content: '';
     position: absolute;
@@ -417,23 +467,28 @@ section {
     box-shadow: 0 3px 8px rgba(135, 206, 235, 0.6);
 }
 
+/* bagian tagline berwarna putih */
 .about-tagline .tagline-white {
     color: var(--text-color);
 }
 
+/* garis bawah biru untuk bagian putih */
 .about-tagline .tagline-white::after {
     background: var(--main-color);
 }
 
+/* bagian tagline berwarna biru */
 .about-tagline .tagline-blue {
     color: var(--main-color);
     margin-left: 0.4rem;
 }
 
+/* garis bawah putih untuk bagian biru */
 .about-tagline .tagline-blue::after {
     background: var(--text-color);
 }
 
+/* daftar info singkat (lokasi, status, jurusan) */
 .about-info {
     display: flex;
     flex-direction: column;
@@ -442,6 +497,7 @@ section {
     margin: 0 0 4rem;
 }
 
+/* satu baris info */
 .info-item {
     position: relative;
     display: flex;
@@ -453,6 +509,7 @@ section {
     color: var(--text-color);
 }
 
+/* garis gradasi di bawah setiap info */
 .info-item::after {
     content: '';
     position: absolute;
@@ -464,25 +521,30 @@ section {
     background: linear-gradient(to right, var(--main-color), var(--text-color));
 }
 
+/* ikon info */
 .info-item i {
     color: var(--main-color);
     font-size: 1.2rem;
 }
 
+/* sebagian teks info berwarna biru */
 .info-item .info-text span {
     color: var(--main-color);
 }
 
+/* tombol utama di about */
 .about-content .btn-primary {
     background: var(--main-color);
     color: black;
     border: 2px solid transparent;
 }
 
+/* jarak atas grup tombol about */
 .about-content .btn-group {
     margin-top: 2rem;
 }
 
+/* tombol outline di about */
 .about-content .btn-outline {
     background-color: black;
     color: var(--main-color);
@@ -490,6 +552,7 @@ section {
     box-shadow: 0 0 25px transparent;
 }
 
+/* tombol outline about saat disorot */
 .about-content .btn-outline:hover {
     background-color: var(--main-color);
     color: black;
@@ -501,6 +564,7 @@ section {
    SKILLS
 ================================ */
 
+/* section keahlian */
 .skill-toolkit {
     position: relative;
     min-height: auto;
@@ -513,6 +577,7 @@ section {
 
 /* animasi komet */
 
+/* dua komet sebagai hiasan latar */
 .skill-toolkit::before,
 .skill-toolkit::after {
     content: "";
@@ -531,11 +596,13 @@ section {
     animation: falling-comet 7s linear infinite;
 }
 
+/* posisi komet pertama */
 .skill-toolkit::before {
     top: 18%;
     left: -15rem;
 }
 
+/* posisi komet kedua (muncul belakangan) */
 .skill-toolkit::after {
     top: 58%;
     left: -20rem;
@@ -543,6 +610,7 @@ section {
     opacity: 0.65;
 }
 
+/* animasi komet jatuh melintasi layar */
 @keyframes falling-comet {
 
     0% {
@@ -560,6 +628,7 @@ section {
     }
 }
 
+/* judul "Keahlian" */
 .skill-toolkit h2 {
     position: relative;
     z-index: 1;
@@ -569,10 +638,12 @@ section {
     color: var(--text-color);
 }
 
+/* bagian judul yang berwarna biru */
 .skill-toolkit h2 .main-color {
     color: var(--main-color);
 }
 
+/* grid kartu keahlian (3 kolom) */
 .skill-grid {
     position: relative;
     z-index: 1;
@@ -583,6 +654,7 @@ section {
     margin: 0 auto;
 }
 
+/* kartu keahlian */
 .skill-card {
     position: relative;
     display: flex;
@@ -598,14 +670,17 @@ section {
     overflow: hidden;
 }
 
+/* kartu ke-4 di kolom pertama */
 .skill-card:nth-child(4) {
     grid-column: 1;
 }
 
+/* kartu ke-5 di kolom kedua */
 .skill-card:nth-child(5) {
     grid-column: 2;
 }
 
+/* garis hiasan di bawah kartu */
 .skill-card::after {
     content: "";
     position: absolute;
@@ -618,17 +693,20 @@ section {
     transition: 0.3s ease-in-out;
 }
 
+/* efek kartu saat disorot */
 .skill-card:hover {
     background-color: #9edff7;
     box-shadow: 0 0 30px rgba(135, 206, 235, 0.55);
     transform: translateY(-6px);
 }
 
+/* garis hiasan lebih gelap saat disorot */
 .skill-card:hover::after {
     background-color: rgba(0, 0, 0, 0.45);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
 
+/* nomor urut kartu (01, 02, ...) */
 .skill-index {
     align-self: flex-start;
     color: rgba(0, 0, 0, 0.55);
@@ -637,23 +715,27 @@ section {
     letter-spacing: 0.12em;
 }
 
+/* ikon keahlian */
 .skill-card i {
     font-size: 7rem;
     margin-bottom: 2.5rem;
     transition: 0.3s ease-in-out;
 }
 
+/* ikon membesar saat kartu disorot */
 .skill-card:hover i {
     transform: scale(1.12) translateY(-4px);
     filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.35));
 }
 
+/* nama keahlian */
 .skill-card h3 {
     font-size: 2.8rem;
     margin-bottom: 1.2rem;
     text-align: center;
 }
 
+/* deskripsi keahlian */
 .skill-card p {
     max-width: 24rem;
     font-size: 1.6rem;
@@ -662,6 +744,7 @@ section {
     text-align: center;
 }
 
+/* garis di bagian bawah kartu */
 .skill-line {
     width: 100%;
     height: 0.3rem;
@@ -671,6 +754,7 @@ section {
     transition: 0.3s ease-in-out;
 }
 
+/* garis lebih gelap saat kartu disorot */
 .skill-card:hover .skill-line {
     background-color: rgba(0, 0, 0, 0.45);
 }
@@ -686,6 +770,7 @@ section {
     max-width: 110rem;
 }
 
+/* ukuran dan bayangan kartu keahlian */
 #skills .skill-card {
     width: 28rem;
     min-height: 28rem;
@@ -696,30 +781,36 @@ section {
         0 0 10px rgba(135, 206, 235, 0.25);
 }
 
+/* sembunyikan garis hiasan bawaan */
 #skills .skill-card::after {
     display: none;
 }
 
+/* bayangan kartu saat disorot */
 #skills .skill-card:hover {
     box-shadow: 0 0 30px rgba(135, 206, 235, 0.6);
 }
 
+/* nomor urut kartu keahlian */
 #skills .skill-index {
     font-size: 1.5rem;
     letter-spacing: 0.05em;
     color: rgba(0, 0, 0, 0.5);
 }
 
+/* ukuran ikon keahlian */
 #skills .skill-card i {
     font-size: 6.2rem;
     margin: 0.8rem 0 1.6rem;
 }
 
+/* ukuran judul keahlian */
 #skills .skill-card h3 {
     font-size: 2.6rem;
     margin-bottom: 1rem;
 }
 
+/* ukuran deskripsi keahlian */
 #skills .skill-card p {
     max-width: 20rem;
     font-size: 1.4rem;
@@ -728,15 +819,18 @@ section {
     margin-bottom: 2rem;
 }
 
+/* warna garis bawah kartu */
 #skills .skill-line {
     height: 0.15rem;
     background-color: rgba(110, 35, 35, 0.75);
 }
 
+/* garis bawah lebih pekat saat disorot */
 #skills .skill-card:hover .skill-line {
     background-color: rgba(110, 35, 35, 1);
 }
 
+/* wadah tombol navigasi di bawah keahlian */
 .skill-nav {
     position: relative;
     z-index: 1;
@@ -746,6 +840,7 @@ section {
     margin-top: 4rem;
 }
 
+/* tombol navigasi keahlian (outline) */
 .skill-nav-btn {
     padding: 1rem 2.5rem;
     font-size: 1.6rem;
@@ -758,6 +853,7 @@ section {
     text-decoration: none;
 }
 
+/* tombol navigasi aktif atau disorot */
 .skill-nav-btn.active,
 .skill-nav-btn:hover {
     color: var(--bg-color);
@@ -771,6 +867,7 @@ section {
    PROJECT
 ================================ */
 
+/* section project */
 .project-toolkit {
     min-height: auto;
     padding-top: 7rem;
@@ -778,6 +875,7 @@ section {
     background-color: #000;
 }
 
+/* judul "Project" */
 .project-heading {
     font-size: 6rem;
     font-weight: 800;
@@ -786,6 +884,7 @@ section {
     color: var(--text-color);
 }
 
+/* grid kartu project (3 kolom) */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -794,12 +893,14 @@ section {
     margin: 0 auto;
 }
 
+/* link pembungkus kartu project */
 .project-card-link {
     text-decoration: none;
     color: inherit;
     display: flex;
 }
 
+/* kartu project */
 .project-card {
     width: 100%;
     height: 100%;
@@ -814,11 +915,13 @@ section {
     transition: 0.3s ease-in-out;
 }
 
+/* kartu project naik saat disorot */
 .project-card-link:hover .project-card {
     transform: translateY(-6px);
     box-shadow: 0 0 30px rgba(135, 206, 235, 0.6);
 }
 
+/* wadah gambar project (rasio 16:9) */
 .project-img {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -827,6 +930,7 @@ section {
     overflow: hidden;
 }
 
+/* gambar project memenuhi wadahnya */
 .project-img img {
     width: 100%;
     height: 100%;
@@ -834,6 +938,7 @@ section {
     display: block;
 }
 
+/* bagian teks kartu project */
 .project-info {
     flex: 1;
     display: flex;
@@ -843,6 +948,7 @@ section {
     padding: 3rem 2.5rem 2.5rem;
 }
 
+/* judul project dengan garis bawah putih */
 .project-info h3 {
     font-size: 1.9rem;
     font-weight: 600;
@@ -851,6 +957,7 @@ section {
     margin-bottom: 3rem;
 }
 
+/* deskripsi project */
 .project-info p {
     max-width: 22rem;
     font-size: 1.6rem;
@@ -858,6 +965,7 @@ section {
     margin-bottom: 1rem;
 }
 
+/* garis di bagian bawah kartu project */
 .project-line {
     width: 90%;
     height: 0.3rem;
@@ -866,12 +974,14 @@ section {
     border-radius: 1rem;
 }
 
+/* wadah tombol di bawah project */
 .project-nav {
     display: flex;
     justify-content: center;
     margin-top: 5rem;
 }
 
+/* tombol contact di section project */
 .project-nav-btn {
     padding: 1rem 2.5rem;
     font-size: 1.6rem;
@@ -882,12 +992,14 @@ section {
     transition: 0.3s ease-in-out;
 }
 
+/* tombol contact project saat disorot */
 .project-nav-btn:hover {
     color: var(--bg-color);
     background-color: var(--main-color);
     box-shadow: 0 0 20px rgba(135, 206, 235, 0.4);
 }
 
+/* tablet: project menjadi 2 kolom */
 @media (max-width: 1024px) {
     .project-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -895,6 +1007,7 @@ section {
     }
 }
 
+/* HP: project menjadi 1 kolom */
 @media (max-width: 600px) {
     .project-heading {
         font-size: 4.5rem;
@@ -911,14 +1024,17 @@ section {
    SCROLLBAR
 ================================ */
 
+/* lebar scrollbar */
 ::-webkit-scrollbar {
     width: 20px;
 }
 
+/* warna batang scrollbar */
 ::-webkit-scrollbar-thumb {
     background-color: var(--main-color);
 }
 
+/* warna jalur scrollbar */
 ::-webkit-scrollbar-track {
     background-color: var(--bg-color);
 }
@@ -928,21 +1044,25 @@ section {
    SERVICES
 ================================ */
 
+/* section services (tidak dipakai di HTML saat ini) */
 .services {
     background-color: var(--bg-color);
     color: black;
 }
 
+/* judul services */
 .services h2 {
     color: var(--text-color);
 }
 
+/* gaya judul section umum */
 .heading {
     text-align: center;
     font-size: 7rem;
     margin: 5rem 0;
 }
 
+/* grid kotak services */
 .services-container {
     display: grid;
     grid-template-columns: repeat(
@@ -953,6 +1073,7 @@ section {
     gap: 2.5rem;
 }
 
+/* kotak service */
 .service-box {
     position: relative;
     display: flex;
@@ -967,6 +1088,7 @@ section {
     overflow: hidden;
 }
 
+/* lingkaran hiasan di pojok kotak */
 .service-box::before {
     content: "";
     position: absolute;
@@ -979,6 +1101,7 @@ section {
     transition: 0.4s ease-in-out;
 }
 
+/* kotak service saat disorot */
 .service-box:hover {
     background-color: var(--second-bg-color);
     color: var(--main-color);
@@ -986,11 +1109,13 @@ section {
     transform: scale(1.03);
 }
 
+/* lingkaran hiasan membesar saat disorot */
 .service-box:hover::before {
     transform: scale(1.35);
     border-color: var(--main-color);
 }
 
+/* posisi nomor dan status service */
 .service-number,
 .service-status {
     position: absolute;
@@ -998,6 +1123,7 @@ section {
     font-weight: 700;
 }
 
+/* nomor service di pojok kiri atas */
 .service-number {
     top: 2.5rem;
     left: 2.5rem;
@@ -1006,6 +1132,7 @@ section {
     letter-spacing: 0.12em;
 }
 
+/* status service di bagian bawah */
 .service-status {
     right: 2.5rem;
     bottom: 2.5rem;
@@ -1016,15 +1143,18 @@ section {
     font-size: 1.4rem;
 }
 
+/* ikon status service */
 .service-status i {
     font-size: 2rem;
     transition: 0.3s ease-in-out;
 }
 
+/* ikon status bergeser saat disorot */
 .service-box:hover .service-status i {
     transform: translateX(0.5rem);
 }
 
+/* isi teks service */
 .service-info {
     display: flex;
     flex-direction: column;
@@ -1034,16 +1164,19 @@ section {
     padding: 5rem;
 }
 
+/* ikon service */
 .service-info i {
     font-size: 8rem;
 }
 
+/* judul service */
 .service-info h4 {
     font-size: 4rem;
     margin: 2rem 0;
     font-weight: 800;
 }
 
+/* deskripsi service */
 .service-info p {
     font-size: 1.4rem;
     font-weight: 600;
@@ -1055,11 +1188,13 @@ section {
    CONTACT
 ================================ */
 
+/* section contact */
 .contact {
     min-height: auto;
     background-color: var(--second-bg-color);
 }
 
+/* judul "Contact Me" */
 .contact-heading {
     font-size: 7rem;
     font-weight: 800;
@@ -1067,6 +1202,7 @@ section {
     margin-bottom: 4rem;
 }
 
+/* form 2 kolom: data diri di kiri, pesan di kanan */
 .contact form {
     display: grid;
     grid-template-columns: 1fr 1.25fr;
@@ -1075,12 +1211,14 @@ section {
     max-width: 120rem;
 }
 
+/* kolom kiri form */
 .contact .input-group {
     display: flex;
     flex-direction: column;
     gap: 3.5rem;
 }
 
+/* kolom kanan form */
 .contact .input-group-2 {
     display: flex;
     flex-direction: column;
@@ -1089,6 +1227,7 @@ section {
     padding-top: 1rem;
 }
 
+/* gaya kolom input dan textarea */
 .contact form input:not([type="submit"]),
 .contact form textarea {
     width: 100%;
@@ -1102,21 +1241,25 @@ section {
     transition: 0.3s ease;
 }
 
+/* ukuran textarea pesan */
 .contact form textarea {
     height: 30rem;
     padding: 2.5rem;
 }
 
+/* warna teks placeholder */
 .contact form input::placeholder,
 .contact form textarea::placeholder {
     color: #888;
 }
 
+/* efek cahaya saat input diklik */
 .contact form input:not([type="submit"]):focus,
 .contact form textarea:focus {
     box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
 }
 
+/* tombol kirim pesan */
 .contact form .btn {
     padding: 1.2rem 4.5rem;
     font-size: 1.6rem;
@@ -1128,35 +1271,42 @@ section {
    FOOTER
 ================================ */
 
+/* footer */
 .footer {
     background-color: var(--bg-color);
     padding: 50px 0;
 }
 
+/* ikon sosial media di tengah */
 .footer .social-icons {
     text-align: center;
 }
 
+/* daftar link footer */
 .footer ul {
     text-align: center;
     font-size: 1.8rem;
 }
 
+/* link footer berjajar */
 .footer ul li {
     display: inline-block;
     margin-left: 20px;
 }
 
+/* gaya link footer */
 .footer ul li a {
     color: white;
     border-bottom: 3px solid transparent;
     transition: 0.3s ease-in-out;
 }
 
+/* garis bawah link footer saat disorot */
 .footer ul li a:hover {
     border-bottom: 3px solid var(--main-color);
 }
 
+/* teks copyright */
 .footer .copyright {
     text-align: center;
     margin-top: 40px;
@@ -1168,12 +1318,15 @@ section {
    TABLET
 ================================ */
 
+/* aturan untuk layar tablet (maks 1024px) */
 @media (max-width: 1024px) {
 
+    /* tampilkan ikon hamburger */
     #menu-icon {
         display: block !important;
     }
 
+    /* navbar menjadi dropdown di kanan */
     .navbar {
         position: absolute;
         top: 100%;
@@ -1187,6 +1340,7 @@ section {
         display: none;
     }
 
+    /* link navbar tersusun ke bawah */
     .navbar a {
         display: block;
         font-size: 2rem;
@@ -1194,38 +1348,45 @@ section {
         color: var(--text-color);
     }
 
+    /* tampilkan navbar saat menu dibuka */
     .navbar.active {
         display: block;
     }
 
+    /* home menjadi vertikal, foto di atas */
     .home {
         flex-direction: column-reverse;
         margin: 5rem 0;
         gap: 5rem;
     }
 
+    /* teks home rata tengah */
     .home-content {
         align-items: center;
         text-align: center;
     }
 
+    /* ukuran foto home di tablet */
     .home-img img {
         width: 52vw;
         height: 52vw;
         object-fit: cover;
     }
 
+    /* ukuran judul about di tablet */
     .about-heading {
         font-size: 4.5rem;
         margin-bottom: 3rem;
     }
 
+    /* about menjadi 1 kolom */
     .about-container {
         grid-template-columns: 1fr;
         justify-items: center;
         row-gap: 4rem;
     }
 
+    /* semua elemen about di satu kolom */
     .about-heading,
     .about-img,
     .about-content {
@@ -1233,10 +1394,12 @@ section {
         grid-row: auto;
     }
 
+    /* hapus jarak atas foto about */
     .about-img {
         margin-top: 0;
     }
 
+    /* ukuran foto about di tablet */
     .about-img img {
         width: 52vw;
         height: 52vw;
@@ -1244,11 +1407,13 @@ section {
         max-height: none;
     }
 
+    /* form contact menjadi 1 kolom */
     .contact form {
         grid-template-columns: 1fr;
         row-gap: 3.5rem;
     }
 
+    /* hapus jarak atas kolom pesan */
     .contact .input-group-2 {
         padding-top: 0;
     }
@@ -1259,50 +1424,61 @@ section {
    HP
 ================================ */
 
+/* aturan untuk layar HP (maks 768px) */
 @media (max-width: 768px) {
 
+    /* perkecil ukuran dasar font */
     html {
         font-size: 50%;
     }
 
+    /* perkecil padding header */
     .header {
         padding: 2rem 5%;
     }
 
+    /* navbar dropdown lebih lebar */
     .navbar {
         width: 70%;
     }
 
+    /* perkecil padding section */
     section {
         padding: 8rem 5% 5rem;
         min-height: auto;
     }
 
+    /* jarak home di HP */
     .home {
         gap: 3rem;
         margin: 2rem 0;
     }
 
+    /* teks home rata tengah penuh */
     .home-content {
         align-items: center !important;
         text-align: center !important;
         width: 100% !important;
     }
 
+    /* ukuran judul home di HP */
     .home-content h1 {
         font-size: 4.2rem;
         text-align: center !important;
         width: 100% !important;
     }
 
+    /* ukuran teks role di HP */
     .home-content h3 {
         font-size: 2.4rem;
     }
 
+    /* ukuran paragraf home di HP */
     .home-content p {
         font-size: 1.5rem;
     }
 
+    /* ukuran foto home dan about di HP */
     .home-img img,
     .about-img img {
         width: 65vw;
@@ -1310,37 +1486,45 @@ section {
         object-fit: cover;
     }
 
+    /* ukuran judul about di HP */
     .about-heading {
         font-size: 3.5rem;
         margin-bottom: 2rem;
     }
 
+    /* jarak antar elemen about */
     .about-container {
         row-gap: 3rem;
     }
 
+    /* teks about rata tengah */
     .about-content {
         text-align: center;
     }
 
+    /* tombol about di tengah */
     .about-content .btn-group {
         justify-content: center;
     }
 
+    /* info about di tengah */
     .about-info {
         align-items: center;
     }
 
+    /* pil info lebih kecil */
     .social-icons a.info-icon {
         padding: 0.8rem 1.2rem;
         font-size: 1.3rem;
     }
 
+    /* services 2 kolom di HP */
     .services-container {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.2rem;
     }
 
+    /* kotak service lebih kecil */
     .service-box {
         height: auto;
         min-height: 200px;
@@ -1349,30 +1533,36 @@ section {
         border: none;
     }
 
+    /* sembunyikan lingkaran hiasan service */
     .service-box::before {
         display: none;
     }
 
+    /* hapus padding isi service */
     .service-info {
         padding: 0;
     }
 
+    /* ikon service lebih kecil */
     .service-info i {
         font-size: 3.5rem;
         margin-bottom: 0.6rem;
     }
 
+    /* judul service lebih kecil */
     .service-info h4 {
         font-size: 1.5rem;
         margin: 0.4rem 0;
         line-height: 1.2;
     }
 
+    /* deskripsi service lebih kecil */
     .service-info p {
         font-size: 1rem;
         line-height: 1.3;
     }
 
+    /* status service menjadi garis tipis */
     .service-status {
         position: absolute;
         right: 1.5rem;
@@ -1386,65 +1576,79 @@ section {
         padding: 0;
     }
 
+    /* sembunyikan ikon status */
     .service-status i {
         display: none;
     }
 
+    /* grid keahlian 2 kolom di HP */
     .skill-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.2rem;
     }
 
+    /* kartu keahlian lebih kecil */
     .skill-card {
         min-height: 200px;
         padding: 2rem 1.2rem 1.8rem;
         border-radius: 1.8rem;
     }
 
+    /* ikon keahlian lebih kecil */
     .skill-card i {
         font-size: 4.5rem;
         margin-bottom: 1rem;
     }
 
+    /* judul keahlian lebih kecil */
     .skill-card h3 {
         font-size: 2rem;
     }
 
+    /* deskripsi keahlian lebih kecil */
     .skill-card p {
         font-size: 1.2rem;
     }
 
+    /* jarak antar kartu keahlian di HP */
     #skills .skill-grid {
         column-gap: 3rem;
         row-gap: 3rem;
     }
 
+    /* ukuran kartu keahlian di HP */
     #skills .skill-card {
         width: 22rem;
         min-height: 22rem;
     }
 
+    /* form contact selebar layar */
     .contact form {
         width: 100%;
     }
 
+    /* judul contact lebih kecil dan di tengah */
     .contact-heading {
         font-size: 4.5rem;
         text-align: center;
     }
 
+    /* kolom input selebar form */
     .contact form .input-group {
         width: 100%;
     }
 
+    /* textarea lebih pendek */
     .contact form textarea {
         height: 22rem;
     }
 
+    /* padding daftar link footer */
     .footer ul {
         padding: 0 2rem;
     }
 
+    /* jarak antar link footer */
     .footer ul li {
         margin: 0.8rem;
     }
@@ -1456,40 +1660,49 @@ section {
    HP KECIL
 ================================ */
 
+/* aturan untuk HP kecil (maks 480px) */
 @media (max-width: 480px) {
 
+    /* judul home lebih kecil */
     .home-content h1 {
         font-size: 3.8rem;
     }
 
+    /* teks role lebih kecil */
     .home-content h3 {
         font-size: 2.1rem;
     }
 
+    /* ukuran foto di HP kecil */
     .home-img img,
     .about-img img {
         width: 70vw;
         height: 70vw;
     }
 
+    /* keahlian dan services menjadi 1 kolom */
     .skill-grid,
     .services-container {
         grid-template-columns: 1fr;
     }
 
+    /* tinggi minimal kartu keahlian */
     .skill-card {
         min-height: 220px;
     }
 
+    /* kartu keahlian selebar layar */
     #skills .skill-card {
         width: 100%;
         max-width: 28rem;
     }
 
+    /* tinggi minimal kotak service */
     .service-box {
         min-height: 220px;
     }
 
+    /* tombol turun ke bawah jika tidak muat */
     .btn-group {
         flex-wrap: wrap;
         justify-content: center;

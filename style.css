@@ -1735,3 +1735,217 @@ section {
     }
 
 }
+
+
+/* ===============================
+   PENYEMPURNAAN TAMPILAN HP
+================================ */
+
+@media (max-width: 768px) {
+
+    /* logo sedikit lebih kecil agar header rapi */
+    .logo {
+        font-size: 2.4rem;
+    }
+
+    /* menu dropdown lebih nyaman disentuh */
+    .navbar {
+        padding: 1rem 2.5rem;
+    }
+
+    .navbar a {
+        margin: 2.2rem 0;
+    }
+
+    /* home: beri ruang dari header */
+    .home {
+        padding-top: 11rem;
+        margin: 0;
+    }
+
+    /* moto hidup rata tengah */
+    .home-content .life-motto {
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* pil lokasi & jam rata tengah dan tidak terlalu renggang */
+    .home-content .social-icons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2.5rem 0;
+    }
+
+    .home-content .social-icons a {
+        margin: 0;
+    }
+
+    /* tombol home & about di tengah */
+    .btn-group {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* jarak section about, skill, project, contact */
+    .about,
+    .skill-toolkit,
+    .project-toolkit,
+    .contact {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+
+    /* paragraf about lebih mudah dibaca */
+    .about-content p {
+        font-size: 1.6rem;
+        line-height: 1.7;
+    }
+
+    /* info lokasi/status/jurusan berjajar dan terbaca */
+    .about-info {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.6rem;
+        margin-bottom: 3rem;
+    }
+
+    .info-item {
+        font-size: 1.6rem;
+    }
+
+    .info-item i {
+        font-size: 1.8rem;
+    }
+
+    /* judul skill */
+    .skill-toolkit h2 {
+        font-size: 4.2rem;
+        margin: 0 0 3rem;
+    }
+
+    /* skill: 2 kartu per baris, kartu terakhir di tengah */
+    #skills .skill-grid {
+        column-gap: 1.5rem;
+        row-gap: 1.5rem;
+    }
+
+    #skills .skill-card {
+        width: calc(50% - 0.75rem);
+        max-width: none;
+        min-height: auto;
+        padding: 2rem 1.5rem 1.8rem;
+        border-radius: 1.8rem;
+    }
+
+    #skills .skill-card i {
+        font-size: 5rem;
+        margin: 0.4rem 0 1rem;
+    }
+
+    #skills .skill-card h3 {
+        font-size: 2.2rem;
+        margin-bottom: 0.6rem;
+    }
+
+    #skills .skill-card p {
+        font-size: 1.35rem;
+        line-height: 1.5;
+        margin-bottom: 1.4rem;
+    }
+
+    /* tombol skill bisa turun jika tidak muat */
+    .skill-nav {
+        flex-wrap: wrap;
+        margin-top: 3.5rem;
+    }
+
+    /* project: kartu selebar layar */
+    .project-heading {
+        font-size: 4.2rem;
+        margin-bottom: 3.5rem;
+    }
+
+    .project-grid {
+        gap: 3rem;
+        max-width: 100%;
+    }
+
+    .project-info {
+        padding: 2rem 2rem 2rem;
+    }
+
+    .project-info h3 {
+        white-space: normal;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-info p {
+        max-width: none;
+        font-size: 1.5rem;
+    }
+
+    /* contact: jarak antar input lebih rapat */
+    .contact-heading {
+        font-size: 4.2rem;
+        margin-bottom: 3rem;
+    }
+
+    .contact .input-group {
+        gap: 2rem;
+    }
+
+    .contact .input-group-2 {
+        gap: 3rem;
+    }
+
+    .contact form .btn {
+        width: 100%;
+    }
+
+    /* footer: ikon sosial lebih kecil dan rapat */
+    .footer {
+        padding: 4rem 0;
+    }
+
+    .footer .social-icons a {
+        font-size: 2.4rem;
+        margin: 0 0.6rem 2.5rem;
+    }
+
+    .footer ul {
+        font-size: 1.6rem;
+    }
+
+    .footer .copyright {
+        margin-top: 2.5rem;
+        font-size: 1.3rem;
+        padding: 0 2rem;
+    }
+}
+
+/* HP sangat kecil: skill tetap 2 kolom tapi lebih ringkas */
+@media (max-width: 360px) {
+
+    #skills .skill-card {
+        padding: 1.6rem 1rem 1.4rem;
+    }
+
+    #skills .skill-card p {
+        font-size: 1.2rem;
+    }
+}
+
+/* layar sentuh: matikan efek hover yang "nyangkut" setelah disentuh */
+@media (hover: none) {
+
+    .skill-card:hover,
+    .project-card-link:hover .project-card,
+    .social-icons a:hover,
+    .btn:hover {
+        transform: none;
+    }
+}

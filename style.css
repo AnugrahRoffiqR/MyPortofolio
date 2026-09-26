@@ -1939,6 +1939,222 @@ section {
     }
 }
 
+/* ===============================
+   PENYEMPURNAAN TAMPILAN HP (LANJUTAN)
+================================ */
+
+/* hilangkan kotak biru saat elemen disentuh di HP */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* angka jam lebar tetap agar pil tidak goyang setiap detik */
+.timezone-value {
+    font-variant-numeric: tabular-nums;
+}
+
+/* menu dropdown muncul dengan animasi halus */
+@media (max-width: 1024px) {
+
+    .navbar {
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-1rem);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+
+    .navbar.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* header lebih solid agar teks di belakangnya tidak mengganggu */
+    .header {
+        background: rgba(8, 8, 8, 0.85);
+        border-bottom: 1px solid rgba(135, 206, 235, 0.15);
+    }
+
+    /* menu dropdown selebar layar */
+    .navbar {
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 1rem 5% 2rem;
+        background-color: rgba(8, 8, 8, 0.97);
+        border-left: none;
+        border-bottom: 2px solid var(--main-color);
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.6);
+    }
+
+    .navbar a,
+    .navbar a:hover,
+    .navbar a.active {
+        margin: 0;
+        padding: 1.6rem 0.5rem;
+        font-size: 2.2rem;
+        border-bottom: 1px solid rgba(135, 206, 235, 0.15);
+    }
+
+    .navbar a:last-child {
+        border-bottom: none;
+    }
+
+    .navbar a.active {
+        padding-left: 1.5rem;
+        color: var(--main-color);
+    }
+
+    /* foto tidak terlalu besar di layar HP lebar */
+    .home-img img,
+    .about-img img {
+        max-width: 42rem;
+        max-height: 42rem;
+    }
+
+    /* teks home lebih mudah dibaca */
+    .home-content h1 {
+        font-size: 4.8rem;
+    }
+
+    .home-content h3 {
+        font-size: 2.6rem;
+    }
+
+    .home-content p {
+        font-size: 1.8rem;
+        line-height: 1.7;
+    }
+
+    /* moto: label dan teks mengalir dalam satu paragraf, tinggi tetap 2 baris */
+    .home-content .life-motto {
+        display: block;
+        font-size: 1.7rem;
+        min-height: 3.4em;
+        margin-top: 1.2rem;
+    }
+
+    .home-content .life-motto strong {
+        margin-right: 0.4rem;
+    }
+
+    .typing-motto.is-typing {
+        display: inline;
+    }
+
+    /* jarak pil info lebih rapat */
+    .home-content .social-icons {
+        margin: 2rem 0 2.5rem;
+    }
+
+    .social-icons a.info-icon {
+        font-size: 1.5rem;
+    }
+
+    .social-icons a.info-icon i {
+        font-size: 2.2rem;
+    }
+
+    /* tombol lebih besar dan mudah disentuh */
+    .btn {
+        padding: 1.2rem 3.2rem;
+        font-size: 1.8rem;
+    }
+
+    /* judul section seragam */
+    .about-heading,
+    .skill-toolkit h2,
+    .project-heading,
+    .contact-heading {
+        font-size: 4.4rem;
+    }
+
+    /* teks about */
+    .about-content p {
+        font-size: 1.8rem;
+    }
+
+    .about-content .about-tagline {
+        font-size: 2rem;
+        margin: 3rem 0 2.5rem;
+    }
+
+    /* deskripsi skill terbaca */
+    #skills .skill-card p {
+        font-size: 1.5rem;
+    }
+
+    .skill-nav-btn,
+    .project-nav-btn {
+        padding: 1.2rem 3rem;
+        font-size: 1.8rem;
+    }
+
+    /* teks project */
+    .project-info h3 {
+        font-size: 2.2rem;
+    }
+
+    .project-info p {
+        font-size: 1.7rem;
+    }
+
+    /* input minimal 16px agar iPhone tidak zoom otomatis saat mengetik */
+    .contact form input:not([type="submit"]),
+    .contact form textarea {
+        font-size: 16px;
+        padding: 1.6rem 1.8rem;
+    }
+
+    .contact form .btn {
+        font-size: 1.8rem;
+        padding: 1.4rem 3rem;
+    }
+
+    /* footer */
+    .footer ul {
+        font-size: 1.8rem;
+    }
+
+    .footer .copyright {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .home-content h1 {
+        font-size: 4.4rem;
+    }
+
+    .home-content h3 {
+        font-size: 2.4rem;
+    }
+
+    /* tombol home & about sama lebar, teks tidak turun baris */
+    .btn-group {
+        width: 100%;
+        max-width: 34rem;
+        margin-left: auto;
+        margin-right: auto;
+        flex-wrap: nowrap;
+    }
+
+    .btn-group .btn {
+        flex: 1 1 0;
+        min-width: 0;
+        text-align: center;
+        white-space: nowrap;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
 /* layar sentuh: matikan efek hover yang "nyangkut" setelah disentuh */
 @media (hover: none) {
 

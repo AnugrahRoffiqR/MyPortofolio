@@ -900,6 +900,7 @@ section {
 .project-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
     gap: 8rem;
     max-width: 110rem;
     margin: 0 auto;
@@ -962,6 +963,7 @@ section {
 
 /* judul project dengan garis bawah putih */
 .project-info h3 {
+    white-space: nowrap;
     font-size: 1.9rem;
     font-weight: 600;
     padding: 0 0.5rem 0.6rem;
@@ -1014,6 +1016,13 @@ section {
     box-shadow:
         0 0 25px var(--main-color),
         0 0 50px var(--main-color);
+}
+
+/* desktop: kartu terakhir yang sendirian di baris baru diletakkan di tengah */
+@media (min-width: 1025px) {
+    .project-card-link:last-child:nth-child(3n + 1) {
+        grid-column: 2;
+    }
 }
 
 /* tablet: project menjadi 2 kolom */

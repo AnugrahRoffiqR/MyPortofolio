@@ -863,8 +863,8 @@ section {
     box-shadow: 0 0 20px rgba(135, 206, 235, 0.4);
 }
 
-/* tombol Project saat disorot dibuat sama seperti tombol Skill di about */
-.skill-nav-btn.active:hover {
+/* tombol Project & Contact saat disorot dibuat sama seperti tombol Skill di about */
+.skill-nav .skill-nav-btn:hover {
     color: black;
     background: var(--main-color);
     border-color: transparent;
@@ -995,6 +995,7 @@ section {
 
 /* tombol contact di section project */
 .project-nav-btn {
+    display: inline-block;
     padding: 1rem 2.5rem;
     font-size: 1.6rem;
     font-weight: 600;
@@ -1005,10 +1006,14 @@ section {
 }
 
 /* tombol contact project saat disorot */
-.project-nav-btn:hover {
-    color: var(--bg-color);
-    background-color: var(--main-color);
-    box-shadow: 0 0 20px rgba(135, 206, 235, 0.4);
+.project-nav .project-nav-btn:hover {
+    color: black;
+    background: var(--main-color);
+    border-color: transparent;
+    transform: scale(1.05);
+    box-shadow:
+        0 0 25px var(--main-color),
+        0 0 50px var(--main-color);
 }
 
 /* tablet: project menjadi 2 kolom */

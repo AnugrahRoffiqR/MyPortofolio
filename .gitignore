@@ -1,1 +1,10 @@
 opencode.json
+
+# skill project ini adalah junction ke ~/.config/opencode/skills
+# jangan ikut di-commit supaya repo tetap ringan
+.opencode/skills/
+
+# hasil render alat desain (screenshot gate) dan skrip verifikasi manual,
+# bukan bagian dari situs
+.taste-skill/
+__pycache__/

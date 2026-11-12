@@ -1,399 +1,317 @@
-// ===============================
-// SELEKSI ELEMEN DOM
-// ===============================
+/* ==========================================================================
+   Portfolio interactions
+   1. Jam WIB langsung
+   2. Menu mobile
+   3. Scrollspy navigasi
+   4. Animasi masuk per bagian
+   5. Parallax ringan pada potret
+   6. Dialog detail project
+   7. Form kontak tanpa reload
+   ========================================================================== */
 
-// ikon hamburger untuk membuka/menutup menu di layar kecil
-const menuIcon = document.querySelector('#menu-icon');
-// wadah menu navigasi utama
-const navbar = document.querySelector('.navbar');
+(() => {
+    'use strict';
 
-// elemen-elemen yang akan diberi efek mengetik
-const typingText = document.querySelector('.typing-text');
-const typingRole = document.querySelector('.typing-role');
-const typingMotto = document.querySelector('.typing-motto');
-const typingContact = document.querySelector('.typing-contact');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// elemen untuk menampilkan jam GMT+7
-const timezoneValue = document.querySelector('.timezone-value');
-
-
-// ===============================
-// UPDATE JAM DAN ZONA WAKTU
-// ===============================
-
-// memperbarui teks jam sesuai waktu Jakarta (GMT+7)
-const updateTimezone = () => {
-
-    // hentikan jika elemen jam tidak ada di halaman
-    if (!timezoneValue) {
-        return;
-    }
-
-    // format waktu Jakarta menjadi jam:menit:detik (format 24 jam)
-    const jakartaTime = new Intl.DateTimeFormat('id-ID', {
+    /* ---------------------------------------------------------------------
+       1. Jam WIB
+       ------------------------------------------------------------------ */
+    const clock = document.querySelector('#clock');
+    const jakartaTime = new Intl.DateTimeFormat('en-GB', {
         timeZone: 'Asia/Jakarta',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: false
-    }).format(new Date());
+    });
 
-    // tampilkan hasilnya ke elemen jam
-    timezoneValue.textContent = `GMT+7 · ${jakartaTime}`;
-};
-
-// jalankan sekali saat halaman dimuat
-updateTimezone();
-
-// perbarui jam setiap 1 detik
-setInterval(updateTimezone, 1000);
-
-
-// ===============================
-// EFEK MENGETIK
-// ===============================
-
-// mengetik ulang isi teks sebuah elemen huruf demi huruf
-// element : elemen target
-// speed   : jeda antar huruf (ms)
-// repeat  : true jika animasi diulang terus
-const typeText = (element, speed, repeat = false) => {
-
-    // hentikan jika elemen tidak ditemukan
-    if (!element) {
-        return;
-    }
-
-    // ambil teks asli lalu rapikan spasi berlebih
-    const textToType = element.textContent
-        .trim()
-        .replace(/\s+/g, ' ');
-
-    // posisi huruf yang sedang diketik
-    let textIndex = 0;
-
-    // kosongkan teks dan tampilkan kursor berkedip
-    element.textContent = '';
-    element.classList.add('is-typing');
-
-    // menambahkan satu huruf setiap kali dipanggil
-    const addNextCharacter = () => {
-
-        // selama masih ada huruf, tambahkan huruf berikutnya
-        if (textIndex < textToType.length) {
-
-            element.textContent += textToType[textIndex];
-
-            textIndex += 1;
-
-            // panggil lagi setelah jeda sesuai speed
-            setTimeout(addNextCharacter, speed);
-
-            return;
+    const renderClock = () => {
+        if (clock) {
+            clock.textContent = `WIB ${jakartaTime.format(new Date())}`;
         }
-
-        // jika mode ulang aktif, tunggu 2.5 detik lalu mulai dari awal
-        if (repeat) {
-
-            setTimeout(() => {
-
-                element.textContent = '';
-                textIndex = 0;
-
-                addNextCharacter();
-
-            }, 2500);
-
-            return;
-        }
-
-        // selesai mengetik, hilangkan kursor
-        element.classList.remove('is-typing');
     };
 
-    // mulai mengetik
-    addNextCharacter();
-};
+    renderClock();
+    window.setInterval(renderClock, 1000);
 
+    /* ---------------------------------------------------------------------
+       2. Menu mobile
+       ------------------------------------------------------------------ */
+    const menuToggle = document.querySelector('#menu-toggle');
+    const siteNav = document.querySelector('#site-nav');
 
-// ===============================
-// EFEK MENGETIK ROLE
-// ===============================
+    const setMenu = (open) => {
+        if (!menuToggle || !siteNav) return;
+        menuToggle.setAttribute('aria-expanded', String(open));
+        siteNav.classList.toggle('is-open', open);
+    };
 
-// mengetik beberapa teks role secara bergantian tanpa henti
-// element : elemen target
-// roles   : daftar teks role
-// speed   : jeda antar huruf (ms)
-const typeRoles = (element, roles, speed) => {
+    if (menuToggle && siteNav) {
+        menuToggle.addEventListener('click', () => {
+            setMenu(menuToggle.getAttribute('aria-expanded') !== 'true');
+        });
 
-    // hentikan jika elemen tidak ditemukan
-    if (!element) {
-        return;
-    }
+        siteNav.addEventListener('click', (event) => {
+            if (event.target.closest('a')) setMenu(false);
+        });
 
-    // indeks role yang sedang ditampilkan
-    let roleIndex = 0;
-
-    // mengetik role saat ini dari awal
-    const typeNextRole = () => {
-
-        const role = roles[roleIndex];
-
-        // posisi huruf dalam role
-        let characterIndex = 0;
-
-        // kosongkan teks dan tampilkan kursor
-        element.textContent = '';
-        element.classList.add('is-typing');
-
-        // menambahkan satu huruf role setiap kali dipanggil
-        const addNextCharacter = () => {
-
-            // selama masih ada huruf, tambahkan huruf berikutnya
-            if (characterIndex < role.length) {
-
-                element.textContent += role[characterIndex];
-
-                characterIndex += 1;
-
-                setTimeout(addNextCharacter, speed);
-
-                return;
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && siteNav.classList.contains('is-open')) {
+                setMenu(false);
+                menuToggle.focus();
             }
+        });
 
-            // role selesai diketik, tunggu 2.5 detik lalu pindah ke role berikutnya
-            setTimeout(() => {
+        document.addEventListener('click', (event) => {
+            if (!siteNav.classList.contains('is-open')) return;
+            if (event.target.closest('.site-header')) return;
+            setMenu(false);
+        });
 
-                // kembali ke role pertama jika sudah di role terakhir
-                roleIndex = (roleIndex + 1) % roles.length;
-
-                typeNextRole();
-
-            }, 2500);
-        };
-
-        addNextCharacter();
-    };
-
-    // mulai dari role pertama
-    typeNextRole();
-};
-
-
-// ===============================
-// JALANKAN ANIMASI MENGETIK
-// ===============================
-
-// nama di bagian home (sekali jalan)
-typeText(typingText, 140);
-
-// role yang berganti-ganti
-typeRoles(
-    typingRole,
-    [
-        'Frontend Developer',
-        'Web Developer'
-    ],
-    100
-);
-
-// moto hidup (diulang terus)
-typeText(typingMotto, 80, true);
-
-// teks kontak (diulang terus, jika elemennya ada)
-typeText(typingContact, 140, true);
-
-
-// ===============================
-// MENU MOBILE
-// ===============================
-
-if (menuIcon && navbar) {
-
-    // klik ikon menu: ubah ikon menjadi X dan tampilkan/sembunyikan navbar
-    menuIcon.onclick = () => {
-
-        menuIcon.classList.toggle('bx-x');
-
-        navbar.classList.toggle('active');
-    };
-
-
-    // menutup menu setelah link diklik
-
-    const navLinks = navbar.querySelectorAll('a');
-
-    navLinks.forEach((link) => {
-
-        link.onclick = () => {
-
-            // kembalikan ikon ke bentuk hamburger
-            menuIcon.classList.remove('bx-x');
-
-            // sembunyikan navbar
-            navbar.classList.remove('active');
-        };
-
-    });
-}
-
-
-// ===============================
-// NAVBAR ACTIVE LINK HANDLING
-// ===============================
-
-// semua link di navbar
-const navLinks = document.querySelectorAll('.navbar a');
-// semua section yang memiliki id (tujuan link navbar)
-const sections = document.querySelectorAll('section[id]');
-
-
-// Fungsi untuk set active link
-const setActiveLink = (href) => {
-    navLinks.forEach(link => {
-        // hapus status aktif dari semua link
-        link.classList.remove('active');
-        // beri status aktif hanya pada link yang href-nya cocok
-        if (link.getAttribute('href') === href) {
-            link.classList.add('active');
-        }
-    });
-};
-
-
-// 1. Handle klik pada navbar link
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        // Hapus active dari semua, tambah ke yang diklik
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-    });
-});
-
-
-// 2. Scrollspy - update active link berdasarkan scroll position
-const scrollSpy = () => {
-    // id section yang sedang terlihat
-    let currentSectionId = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100; // offset untuk header
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-
-        // cek apakah posisi scroll berada di dalam section ini
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-            currentSectionId = sectionId;
-        }
-    });
-
-    // jika sudah di dasar halaman, aktifkan section terakhir (contact)
-    const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
-
-    if (atBottom && sections.length) {
-        currentSectionId = sections[sections.length - 1].getAttribute('id');
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 780) setMenu(false);
+        });
     }
 
-    // tandai link navbar yang sesuai dengan section aktif
-    if (currentSectionId) {
-        setActiveLink(`#${currentSectionId}`);
-    }
-};
+    /* ---------------------------------------------------------------------
+       3. Scrollspy: tautan yang sedang dibaca diberi aria-current
+       ------------------------------------------------------------------ */
+    const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+    const sections = navLinks
+        .map((link) => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
 
-// Throttle scroll event untuk performa
-let scrollTimeout;
-window.addEventListener('scroll', () => {
-    // batalkan pengecekan sebelumnya agar tidak dijalankan berulang-ulang
-    if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-    }
-    // jalankan scrollSpy 50ms setelah scroll berhenti
-    scrollTimeout = setTimeout(scrollSpy, 50);
-});
-
-// Jalankan sekali saat load untuk memastikan posisi awal benar
-scrollSpy();
-
-
-// ===============================
-// FORM CONTACT
-// ===============================
-
-// form kontak di bagian contact
-const contactForm = document.querySelector('#contact-form');
-
-if (contactForm) {
-
-    // kirim form lewat fetch (AJAX) tanpa pindah halaman
-    contactForm.onsubmit = async (e) => {
-
-        // cegah form reload halaman
-        e.preventDefault();
-
-        // tombol kirim
-        const submitBtn =
-            document.querySelector('#submit-btn');
-
-        // simpan teks asli tombol untuk dikembalikan nanti
-        const originalText =
-            submitBtn.value;
-
-        // tampilkan status mengirim dan nonaktifkan tombol
-        submitBtn.value = 'Sending...';
-
-        submitBtn.disabled = true;
-
-
-        try {
-
-            // kirim data form ke FormSubmit
-            const response = await fetch(
-                contactForm.action,
-                {
-                    method: 'POST',
-
-                    // ambil semua isi input form
-                    body: new FormData(contactForm),
-
-                    // minta balasan dalam format JSON
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }
-            );
-
-
-            // cek apakah pengiriman berhasil
-            if (response.ok) {
-
-                alert(
-                    'Pesan berhasil terkirim ke email Nugi!'
-                );
-
-                // kosongkan form setelah berhasil
-                contactForm.reset();
-
+    const setCurrent = (id) => {
+        navLinks.forEach((link) => {
+            if (link.getAttribute('href') === `#${id}`) {
+                link.setAttribute('aria-current', 'true');
             } else {
-
-                alert(
-                    'Gagal mengirim pesan. Silakan coba lagi.'
-                );
+                link.removeAttribute('aria-current');
             }
+        });
+    };
 
+    if ('IntersectionObserver' in window && sections.length) {
+        const spy = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) setCurrent(entry.target.id);
+            });
+        }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
 
-        } catch (error) {
+        sections.forEach((section) => spy.observe(section));
+    }
 
-            // terjadi jika koneksi internet bermasalah
-            alert(
-                'Terjadi kesalahan koneksi.'
-            );
+    /* ---------------------------------------------------------------------
+       4. Animasi masuk: elemen diberi .reveal oleh JS, jadi konten tetap
+          terlihat kalau skrip ini gagal dimuat.
+       ------------------------------------------------------------------ */
+    const revealGroups = [
+        ['.section-head', 0],
+        ['.about-figure', 0],
+        ['.about-text', 80],
+        ['.skill-row', 70],
+        ['.work-item', 90],
+        ['.contact-links', 0],
+        ['.contact-form', 90],
+        ['.work-foot', 0],
+        ['.footer-invite', 0],
+        ['.footer-nav', 90],
+        ['.footer-legal', 140]
+    ];
 
-        } finally {
+    const revealTargets = [];
 
-            // kembalikan tombol ke kondisi semula
-            submitBtn.value = originalText;
+    revealGroups.forEach(([selector, step]) => {
+        document.querySelectorAll(selector).forEach((element, index) => {
+            element.classList.add('reveal');
+            element.style.setProperty('--reveal-delay', `${index * step}ms`);
+            revealTargets.push(element);
+        });
+    });
 
-            submitBtn.disabled = false;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealTargets.forEach((element) => element.classList.add('is-in'));
+    } else {
+        const revealer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+
+        revealTargets.forEach((element) => revealer.observe(element));
+
+        /* Lompat ke #anchor bisa mendaratkan blok tinggi hanya sedikit di layar,
+           jadi blok yang sudah menyentuh area baca langsung ditampilkan. */
+        const settle = () => {
+            revealTargets.forEach((element) => {
+                const box = element.getBoundingClientRect();
+                if (box.top < window.innerHeight * 0.92) element.classList.add('is-in');
+            });
+        };
+
+        window.addEventListener('hashchange', settle);
+        window.addEventListener('load', settle);
+    }
+
+    /* ---------------------------------------------------------------------
+       5. Parallax potret: hanya transform, hanya di layar lebar
+       ------------------------------------------------------------------ */
+    const heroFigure = document.querySelector('.hero-figure');
+    const heroImage = heroFigure ? heroFigure.querySelector('img') : null;
+
+    if (heroImage && !reduceMotion && window.matchMedia('(min-width: 781px)').matches) {
+        let frame = 0;
+
+        const shiftPortrait = () => {
+            frame = 0;
+            const offset = Math.min(window.scrollY, window.innerHeight) * 0.055;
+            heroImage.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) scale(1.07)`;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (frame) return;
+            frame = window.requestAnimationFrame(shiftPortrait);
+        }, { passive: true });
+
+        shiftPortrait();
+    }
+
+    /* ---------------------------------------------------------------------
+       6. Dialog detail project
+       ------------------------------------------------------------------ */
+    const projects = {
+        store: {
+            title: 'Landing Page Store',
+            tech: 'HTML · CSS · JavaScript',
+            description:
+                'Landing page bertema toko parfum: navigasi ringkas, hero dengan produk sebagai fokus, dan tipografi besar yang mengarahkan mata ke satu aksi.',
+            image: 'assets/work-store.webp',
+            alt: 'Landing page toko parfum dengan judul Find Your Signature Scent',
+            href: 'https://anugrahroffiqr.github.io/MyLandingPageStore/'
+        },
+        calculator: {
+            title: 'Kalkulator Sederhana',
+            tech: 'HTML · CSS · JavaScript',
+            description:
+                'Kalkulator dengan operasi dasar, tombol besar yang mudah ditekan, dan palet pastel yang lembut. Logika perhitungan ditulis tanpa library.',
+            image: 'assets/work-calculator.webp',
+            alt: 'Kalkulator pastel dengan tombol angka dan operator',
+            href: 'https://anugrahroffiqr.github.io/MyCalculator/'
+        },
+        login: {
+            title: 'Halaman Login',
+            tech: 'HTML · CSS · JavaScript',
+            description:
+                'Halaman login dengan ilustrasi kucing, form ringkas, dan validasi dasar sebelum data dikirim. Fokus dibuat jelas supaya mudah diisi dari ponsel.',
+            image: 'assets/work-login.webp',
+            alt: 'Halaman login dengan ilustrasi kucing pastel',
+            href: 'https://anugrahroffiqr.github.io/MyHalamanLogin/'
+        },
+        marvel: {
+            title: 'Landing Page Marvel',
+            tech: 'HTML · CSS · JavaScript',
+            description:
+                'Landing page bertema Marvel: hero sinematik, judul raksasa, dan navigasi yang tidak menutupi gambar utama.',
+            image: 'assets/work-marvel.webp',
+            alt: 'Landing page Marvel dengan tipografi Black Panther',
+            href: 'https://anugrahroffiqr.github.io/MyLandingPageMarvel/'
         }
     };
-}
+
+    const dialog = document.querySelector('#project-dialog');
+
+    if (dialog && typeof dialog.showModal === 'function') {
+        const dialogImage = dialog.querySelector('#dialog-image');
+        const dialogTitle = dialog.querySelector('#dialog-title');
+        const dialogTech = dialog.querySelector('#dialog-tech');
+        const dialogDesc = dialog.querySelector('#dialog-desc');
+        const dialogLink = dialog.querySelector('#dialog-link');
+        const closeButton = dialog.querySelector('#dialog-close');
+        let lastTrigger = null;
+
+        document.querySelectorAll('.work-open[data-project]').forEach((trigger) => {
+            trigger.addEventListener('click', (event) => {
+                const project = projects[trigger.dataset.project];
+                if (!project) return;
+
+                event.preventDefault();
+                lastTrigger = trigger;
+
+                dialogImage.src = project.image;
+                dialogImage.alt = project.alt;
+                dialogTitle.textContent = project.title;
+                dialogTech.textContent = project.tech;
+                dialogDesc.textContent = project.description;
+                dialogLink.href = project.href;
+
+                dialog.showModal();
+                document.documentElement.style.overflow = 'hidden';
+            });
+        });
+
+        const closeDialog = () => {
+            dialog.close();
+            document.documentElement.style.overflow = '';
+            if (lastTrigger) lastTrigger.focus();
+        };
+
+        closeButton.addEventListener('click', closeDialog);
+
+        dialog.addEventListener('cancel', () => {
+            document.documentElement.style.overflow = '';
+            if (lastTrigger) lastTrigger.focus();
+        });
+
+        dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) closeDialog();
+        });
+    }
+
+    /* ---------------------------------------------------------------------
+       7. Form kontak: kirim lewat fetch, status ditulis di halaman
+       ------------------------------------------------------------------ */
+    const form = document.querySelector('#contact-form');
+    const status = document.querySelector('#form-status');
+    const submitButton = document.querySelector('#submit-btn');
+
+    if (form && status && submitButton) {
+        const buttonLabel = submitButton.innerHTML;
+
+        const report = (message, state) => {
+            status.textContent = message;
+            if (state) status.dataset.state = state;
+            else delete status.dataset.state;
+        };
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!form.reportValidity()) return;
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mengirim…';
+            report('', null);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { Accept: 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('failed');
+
+                report('Pesan terkirim. Terima kasih sudah menghubungi!', 'ok');
+                form.reset();
+            } catch (error) {
+                report('Pesan gagal dikirim. Coba lagi, atau email nugi5555.a@gmail.com.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = buttonLabel;
+            }
+        });
+    }
+})();

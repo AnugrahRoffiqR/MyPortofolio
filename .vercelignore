@@ -1,0 +1,8 @@
+.git
+.taste-skill
+.opencode
+__pycache__
+.env*
+AGENTS.md
+DESIGN.md
+opencode.json

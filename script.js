@@ -2,6 +2,11 @@ import * as THREE from 'three';
 
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COMMENTS_STORAGE_KEY = 'nugi_portfolio_comments_v1';
+const COMMENTS_MIGRATED_KEY = 'nugi_portfolio_comments_migrated_v1';
+const SPOTIFY_PLAYLIST_ID = '0cF2K9ACAqGr0nDEIBNo6F';
+const PORTFOLIO_API_BASE = window.location.hostname.endsWith('.vercel.app')
+  ? ''
+  : 'https://myportofolio-omega-snowy.vercel.app';
 const EMAIL_ADDRESS = 'nugi5555.a@gmail.com';
 
 /* ========================================================================
@@ -2780,10 +2785,14 @@ function initLanyard() {
   wakePhysics();
 }
 /* ========================================================================
-   Spotify Embed Loader State
+   Live Synced Spotify Playlist Player
    ======================================================================== */
-function initSpotifyEmbed() {
-  const iframe = document.getElementById('spotify-embed-frame');
+function isSafeHttpUrl(url) {
+  return typeof url === 'string' && /^https:\/\//i.test(url);
+}
+
+function initSpotifyPlayer() {
+  const container = document.getElementById('spotify-live-player');
   const skeleton = document.getElementById('spotify-player-skeleton');
   const openLink = document.getElementById('spotify-open-link');
 
@@ -2791,26 +2800,307 @@ function initSpotifyEmbed() {
     AudioEngine.playClick(690, 0.05);
   });
 
-  if (!iframe || !skeleton) return;
+  if (!container || !skeleton) return;
 
   const markLoaded = () => {
     skeleton.classList.add('is-loaded');
   };
 
-  iframe.addEventListener('load', markLoaded, { once: true });
+  const audio = new Audio();
+  audio.preload = 'none';
 
-  // Arm failsafe timeout only once lazy iframe enters preload range.
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        observer.disconnect();
-        window.setTimeout(markLoaded, 3200);
-      }
-    }, { rootMargin: '400px 0px' });
-    observer.observe(iframe);
-  } else {
-    window.setTimeout(markLoaded, 3200);
+  const PLAY_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  const PAUSE_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
+  const PREV_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>';
+  const NEXT_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>';
+
+  let tracks = [];
+  let activeIdx = 0;
+  let playBtnEl = null;
+  let nowTextEl = null;
+  let progressFillEl = null;
+  let listEl = null;
+  let rowEls = [];
+
+  function syncUiState() {
+    const isPlaying = !audio.paused && Boolean(audio.src);
+    if (playBtnEl) {
+      playBtnEl.innerHTML = isPlaying ? PAUSE_SVG : PLAY_SVG;
+      playBtnEl.setAttribute('aria-label', isPlaying ? 'Jeda lagu' : 'Putar lagu');
+    }
+
+    const activeTrack = tracks[activeIdx];
+    if (nowTextEl && activeTrack) {
+      nowTextEl.textContent = '';
+      const prefix = document.createTextNode(isPlaying ? 'Memutar preview: ' : 'Siap diputar: ');
+      const strong = document.createElement('strong');
+      strong.textContent = activeTrack.title;
+      const suffix = document.createTextNode(activeTrack.artists ? ` — ${activeTrack.artists}` : '');
+      nowTextEl.append(prefix, strong, suffix);
+    }
+
+    rowEls.forEach((row, idx) => {
+      row.classList.toggle('is-active', idx === activeIdx);
+    });
   }
+
+  function scrollTrackIntoView(idx) {
+    const row = rowEls[idx];
+    if (!row || !listEl) return;
+    const rowTop = row.offsetTop - listEl.offsetTop;
+    const rowBottom = rowTop + row.offsetHeight;
+    if (rowTop < listEl.scrollTop) {
+      listEl.scrollTop = rowTop - 4;
+    } else if (rowBottom > listEl.scrollTop + listEl.clientHeight) {
+      listEl.scrollTop = rowBottom - listEl.clientHeight + 4;
+    }
+  }
+
+  function playTrack(idx, autoPlay = true) {
+    if (!tracks.length) return;
+    activeIdx = ((idx % tracks.length) + tracks.length) % tracks.length;
+    const track = tracks[activeIdx];
+    scrollTrackIntoView(activeIdx);
+
+    if (!isSafeHttpUrl(track.previewUrl)) {
+      audio.pause();
+      audio.removeAttribute('src');
+      if (progressFillEl) progressFillEl.style.width = '0%';
+      syncUiState();
+      if (nowTextEl) {
+        nowTextEl.textContent = `Preview tidak tersedia — buka "${track.title}" langsung di Spotify.`;
+      }
+      return;
+    }
+
+    if (audio.src !== track.previewUrl) {
+      audio.src = track.previewUrl;
+      if (progressFillEl) progressFillEl.style.width = '0%';
+    }
+
+    if (autoPlay) {
+      audio.play().catch(() => {});
+    }
+    syncUiState();
+  }
+
+  audio.addEventListener('play', syncUiState);
+  audio.addEventListener('pause', syncUiState);
+  audio.addEventListener('timeupdate', () => {
+    if (!progressFillEl || !audio.duration) return;
+    const pct = Math.min(100, Math.max(0, (audio.currentTime / audio.duration) * 100));
+    progressFillEl.style.width = `${pct.toFixed(1)}%`;
+  });
+  audio.addEventListener('ended', () => {
+    if (tracks.length > 1) {
+      playTrack(activeIdx + 1, true);
+    } else {
+      syncUiState();
+    }
+  });
+
+  function renderErrorState() {
+    container.textContent = '';
+    const box = document.createElement('div');
+    box.className = 'spotify-live-error';
+    const msg = document.createElement('p');
+    msg.textContent = 'Gagal menyinkronkan daftar lagu Spotify.';
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.className = 'spotify-live-retry';
+    retry.textContent = 'Muat Ulang Playlist';
+    retry.addEventListener('click', loadPlaylist);
+    box.append(msg, retry);
+    container.appendChild(box);
+    markLoaded();
+  }
+
+  function renderPlaylist(data) {
+    tracks = Array.isArray(data.tracks) ? data.tracks : [];
+    activeIdx = 0;
+    rowEls = [];
+    container.textContent = '';
+
+    const header = document.createElement('div');
+    header.className = 'spotify-live-header';
+
+    if (isSafeHttpUrl(data.coverUrl)) {
+      const cover = document.createElement('img');
+      cover.className = 'spotify-live-cover';
+      cover.src = data.coverUrl;
+      cover.alt = data.name || 'Playlist Cover';
+      cover.loading = 'eager';
+      header.appendChild(cover);
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'spotify-live-meta';
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'spotify-live-title-row';
+    const title = document.createElement('h3');
+    title.className = 'spotify-live-title';
+    title.textContent = data.name || 'Focus Coding';
+    const badge = document.createElement('span');
+    badge.className = 'spotify-live-badge';
+    badge.textContent = 'Live Sync';
+    titleRow.append(title, badge);
+
+    const subtitle = document.createElement('p');
+    subtitle.className = 'spotify-live-subtitle';
+    const countLabel = Number(data.totalCount) || tracks.length;
+    subtitle.textContent = `${data.owner || 'cynicc'} • ${countLabel} lagu`;
+
+    const extLink = document.createElement('a');
+    extLink.className = 'spotify-live-ext';
+    extLink.href = isSafeHttpUrl(data.url)
+      ? data.url
+      : `https://open.spotify.com/playlist/${SPOTIFY_PLAYLIST_ID}`;
+    extLink.target = '_blank';
+    extLink.rel = 'noopener noreferrer';
+    extLink.textContent = 'Buka lengkap di Spotify ↗';
+
+    meta.append(titleRow, subtitle, extLink);
+
+    const controls = document.createElement('div');
+    controls.className = 'spotify-live-controls';
+    const playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'spotify-live-play-btn';
+    playBtn.innerHTML = PLAY_SVG;
+    playBtn.setAttribute('aria-label', 'Putar lagu');
+    playBtn.addEventListener('click', () => {
+      AudioEngine.playClick(690, 0.04);
+      if (!audio.src && tracks.length) {
+        playTrack(activeIdx, true);
+      } else if (audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+    });
+    playBtnEl = playBtn;
+    controls.appendChild(playBtn);
+
+    header.append(meta, controls);
+
+    const nowbar = document.createElement('div');
+    nowbar.className = 'spotify-live-nowbar';
+    const nowText = document.createElement('div');
+    nowText.className = 'spotify-live-nowtext';
+    nowTextEl = nowText;
+
+    const nav = document.createElement('div');
+    nav.className = 'spotify-live-nav';
+    const prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'spotify-live-nav-btn';
+    prevBtn.innerHTML = PREV_SVG;
+    prevBtn.setAttribute('aria-label', 'Lagu sebelumnya');
+    prevBtn.addEventListener('click', () => playTrack(activeIdx - 1, true));
+
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'spotify-live-nav-btn';
+    nextBtn.innerHTML = NEXT_SVG;
+    nextBtn.setAttribute('aria-label', 'Lagu berikutnya');
+    nextBtn.addEventListener('click', () => playTrack(activeIdx + 1, true));
+    nav.append(prevBtn, nextBtn);
+
+    const progress = document.createElement('div');
+    progress.className = 'spotify-live-progress';
+    const progressFill = document.createElement('div');
+    progressFill.className = 'spotify-live-progress-fill';
+    progressFillEl = progressFill;
+    progress.appendChild(progressFill);
+
+    nowbar.append(nowText, nav, progress);
+
+    const list = document.createElement('div');
+    list.className = 'spotify-live-tracks';
+    listEl = list;
+
+    tracks.forEach((track, idx) => {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'spotify-live-track';
+      row.setAttribute('data-track-id', track.id || '');
+
+      const num = document.createElement('span');
+      num.className = 'spotify-live-track-num';
+      num.textContent = String(track.index || idx + 1);
+
+      const art = document.createElement('img');
+      art.className = 'spotify-live-track-art';
+      if (isSafeHttpUrl(track.coverUrl)) {
+        art.src = track.coverUrl;
+      } else if (isSafeHttpUrl(data.coverUrl)) {
+        art.src = data.coverUrl;
+      }
+      art.alt = '';
+      art.loading = idx < 8 ? 'eager' : 'lazy';
+
+      const copy = document.createElement('span');
+      copy.className = 'spotify-live-track-copy';
+      const tTitle = document.createElement('span');
+      tTitle.className = 'spotify-live-track-title';
+      tTitle.textContent = track.title || 'Untitled';
+      const tArtist = document.createElement('span');
+      tArtist.className = 'spotify-live-track-artist';
+      if (track.isExplicit) {
+        const exp = document.createElement('span');
+        exp.className = 'spotify-live-explicit';
+        exp.textContent = 'E';
+        tArtist.appendChild(exp);
+      }
+      tArtist.appendChild(document.createTextNode(track.artists || ''));
+      copy.append(tTitle, tArtist);
+
+      const dur = document.createElement('span');
+      dur.className = 'spotify-live-track-dur';
+      dur.textContent = track.durationFormatted || '';
+
+      row.append(num, art, copy, dur);
+      row.addEventListener('click', () => {
+        AudioEngine.playClick(720, 0.04);
+        if (idx === activeIdx && audio.src) {
+          if (audio.paused) {
+            audio.play().catch(() => {});
+          } else {
+            audio.pause();
+          }
+        } else {
+          playTrack(idx, true);
+        }
+      });
+
+      rowEls.push(row);
+      list.appendChild(row);
+    });
+
+    container.append(header, nowbar, list);
+    syncUiState();
+    markLoaded();
+  }
+
+  async function loadPlaylist() {
+    try {
+      const res = await fetch(
+        `${PORTFOLIO_API_BASE}/api/spotify-playlist?id=${encodeURIComponent(SPOTIFY_PLAYLIST_ID)}`,
+        { cache: 'no-store' }
+      );
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (!Array.isArray(data?.tracks) || !data.tracks.length) {
+        throw new Error('Empty tracks');
+      }
+      renderPlaylist(data);
+    } catch {
+      renderErrorState();
+    }
+  }
+
+  loadPlaylist();
 }
 
 /* ========================================================================
@@ -3168,7 +3458,7 @@ function initContactAndComments() {
     }
   });
 
-  // Visitor Comments Guestbook (localStorage)
+  // Visitor Comments Guestbook (Global Cloud Sync via /api/comments)
   const commentForm = document.getElementById('comment-form');
   const commentName = document.getElementById('comment-name');
   const commentMsg = document.getElementById('comment-message');
@@ -3177,10 +3467,14 @@ function initContactAndComments() {
   const errorBox = document.getElementById('comment-error');
   const countSpan = document.getElementById('comment-count');
   const listEl = document.getElementById('comments-list');
+  const commentSubmitBtn = commentForm?.querySelector('.contact-submit-btn');
+  const commentSubmitLabel = commentSubmitBtn?.querySelector('span');
 
+  const SAFE_AVATAR_RE = /^data:image\/(webp|png|jpeg|gif);base64,[A-Za-z0-9+/=]+$/i;
   let pendingAvatar = '';
+  let cachedComments = [];
 
-  function loadComments() {
+  function readLegacyLocalComments() {
     try {
       const raw = window.localStorage.getItem(COMMENTS_STORAGE_KEY);
       const parsed = raw ? JSON.parse(raw) : [];
@@ -3190,8 +3484,7 @@ function initContactAndComments() {
     }
   }
 
-  function renderComments() {
-    const items = loadComments();
+  function renderComments(items = cachedComments) {
     if (countSpan) countSpan.textContent = `(${items.length})`;
     if (!listEl) return;
 
@@ -3208,7 +3501,7 @@ function initContactAndComments() {
       const article = document.createElement('article');
       article.className = 'contact-comment-item';
 
-      if (item.avatar) {
+      if (typeof item.avatar === 'string' && SAFE_AVATAR_RE.test(item.avatar)) {
         const img = document.createElement('img');
         img.className = 'contact-comment-avatar';
         img.src = item.avatar;
@@ -3244,6 +3537,67 @@ function initContactAndComments() {
     });
   }
 
+  async function migrateLegacyCommentsIfNeeded(serverItems) {
+    try {
+      if (window.localStorage.getItem(COMMENTS_MIGRATED_KEY) === '1') return false;
+      const localItems = readLegacyLocalComments();
+      if (!localItems.length) {
+        window.localStorage.setItem(COMMENTS_MIGRATED_KEY, '1');
+        return false;
+      }
+
+      let migratedAny = false;
+      for (const local of localItems) {
+        if (!local?.name || !local?.message) continue;
+        const alreadyRemote = serverItems.some(
+          (remote) => remote.name === local.name && remote.message === local.message
+        );
+        if (alreadyRemote) continue;
+
+        const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: String(local.name).slice(0, 80),
+            message: String(local.message).slice(0, 1000),
+            avatar: typeof local.avatar === 'string' ? local.avatar : '',
+            createdAt: typeof local.createdAt === 'string' ? local.createdAt : undefined,
+          }),
+        });
+        if (!res.ok) return false;
+        migratedAny = true;
+      }
+
+      window.localStorage.setItem(COMMENTS_MIGRATED_KEY, '1');
+      return migratedAny;
+    } catch {
+      return false;
+    }
+  }
+
+  async function syncComments() {
+    try {
+      const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      let items = Array.isArray(data?.comments) ? data.comments : [];
+
+      const migrated = await migrateLegacyCommentsIfNeeded(items);
+      if (migrated) {
+        const refreshed = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, { cache: 'no-store' });
+        if (refreshed.ok) {
+          const refreshedData = await refreshed.json();
+          if (Array.isArray(refreshedData?.comments)) items = refreshedData.comments;
+        }
+      }
+
+      cachedComments = items;
+      renderComments(cachedComments);
+    } catch {
+      renderComments(cachedComments);
+    }
+  }
+
   commentPhoto?.addEventListener('change', async () => {
     if (errorBox) errorBox.hidden = true;
     const file = commentPhoto.files?.[0];
@@ -3269,33 +3623,55 @@ function initContactAndComments() {
     }
   });
 
-  commentForm?.addEventListener('submit', (e) => {
+  commentForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     AudioEngine.playClick(720, 0.05);
+    if (errorBox) errorBox.hidden = true;
+
     const nameVal = (commentName?.value || '').trim();
     const msgVal = (commentMsg?.value || '').trim();
     if (!nameVal || !msgVal) return;
 
-    const items = loadComments();
-    items.unshift({
-      name: nameVal.slice(0, 80),
-      message: msgVal.slice(0, 1000),
-      avatar: pendingAvatar,
-      createdAt: new Date().toISOString(),
-    });
-    try {
-      window.localStorage.setItem(COMMENTS_STORAGE_KEY, JSON.stringify(items.slice(0, 30)));
-    } catch {
-      // Ignore storage full errors
-    }
+    if (commentSubmitBtn) commentSubmitBtn.disabled = true;
+    if (commentSubmitLabel) commentSubmitLabel.textContent = 'Mengirim...';
 
-    commentForm.reset();
-    pendingAvatar = '';
-    if (photoLabel) photoLabel.querySelector('span').textContent = 'Pilih Foto Profil';
-    renderComments();
+    try {
+      const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameVal.slice(0, 80),
+          message: msgVal.slice(0, 1000),
+          avatar: pendingAvatar,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.comment) {
+        throw new Error(data?.error || 'Gagal mengirim komentar.');
+      }
+
+      const exists = cachedComments.some((c) => c.id && c.id === data.comment.id);
+      if (!exists) {
+        cachedComments = [data.comment, ...cachedComments];
+      }
+      renderComments(cachedComments);
+
+      commentForm.reset();
+      pendingAvatar = '';
+      if (photoLabel) photoLabel.querySelector('span').textContent = 'Pilih Foto Profil';
+    } catch (err) {
+      if (errorBox) {
+        errorBox.textContent = err?.message || 'Gagal mengirim komentar. Silakan coba lagi.';
+        errorBox.hidden = false;
+      }
+    } finally {
+      if (commentSubmitBtn) commentSubmitBtn.disabled = false;
+      if (commentSubmitLabel) commentSubmitLabel.textContent = 'Kirim Komentar';
+    }
   });
 
-  renderComments();
+  renderComments([]);
+  syncComments();
 
   // Footer Back To Top
   document.getElementById('back-to-top-btn')?.addEventListener('click', () => {
@@ -3319,7 +3695,7 @@ function boot() {
   initTabsAndDetailView();
   initCursorGlow();
   initLiquidMetalBorders();
-  initSpotifyEmbed();
+  initSpotifyPlayer();
   initContactAndComments();
   initScrollReveal();
 }

@@ -217,23 +217,25 @@ body,
   flex-shrink: 0;
   width: 46px;
   height: 46px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(7, 13, 28, 0.86);
+  border: 1.2px solid rgba(56, 189, 248, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   filter: drop-shadow(0 8px 22px rgba(44, 103, 237, 0.24));
 }
 
-.welcome-emblem svg {
+.welcome-emblem-img {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.welcome-emblem-n {
-  stroke-dasharray: 92;
-  stroke-dashoffset: 92;
-  animation: welcome-draw-n 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.06s forwards;
-}
-
-.welcome-emblem-node {
-  animation: welcome-node-pulse 1.8s ease-in-out infinite;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.28));
+  animation:
+    welcome-emblem-in 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both,
+    welcome-emblem-pulse 2.2s ease-in-out 0.78s infinite;
 }
 
 .welcome-wordmark-group {
@@ -373,9 +375,26 @@ body,
   }
 }
 
-@keyframes welcome-draw-n {
-  to {
-    stroke-dashoffset: 0;
+@keyframes welcome-emblem-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes welcome-emblem-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.86;
+    transform: scale(0.95);
   }
 }
 
@@ -3961,16 +3980,11 @@ body,
   .hero-typewriter-cursor,
   .welcome-loader,
   .welcome-aura,
-  .welcome-emblem-n,
-  .welcome-emblem-node,
+  .welcome-emblem-img,
   .welcome-status-dot,
   .about-portrait-stage.is-in-view:not(.spider-hovered):not([data-spider-visible="true"]) .about-person-image,
   .about-portrait-stage.is-in-view:not(.spider-hovered):not([data-spider-visible="true"]) .about-spider-image {
     animation: none;
-  }
-
-  .welcome-emblem-n {
-    stroke-dashoffset: 0;
   }
 
   .js-reveal-ready [data-reveal] {

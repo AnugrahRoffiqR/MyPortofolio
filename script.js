@@ -468,8 +468,8 @@ function initParticles() {
   const isLowPowerDevice =
     typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
 
-  // Pre-render sharp pinpoint cores with tight atmospheric glow stamps
-  const createStarSprite = (coreRgb, haloRgb, haloAlpha) => {
+  // Pre-render soft circular cosmic snow-dust sprites (diffuse core + gentle atmospheric halo)
+  const createDustSprite = (coreRgb, haloRgb, haloAlpha) => {
     const size = 48;
     const c = document.createElement('canvas');
     c.width = size;
@@ -479,9 +479,9 @@ function initParticles() {
     const half = size * 0.5;
     const g = sctx.createRadialGradient(half, half, 0, half, half, half);
     g.addColorStop(0, `rgba(${coreRgb}, 1)`);
-    g.addColorStop(0.14, `rgba(${coreRgb}, 0.96)`);
-    g.addColorStop(0.28, `rgba(${haloRgb}, ${haloAlpha})`);
-    g.addColorStop(0.58, `rgba(${haloRgb}, ${(haloAlpha * 0.25).toFixed(3)})`);
+    g.addColorStop(0.18, `rgba(${coreRgb}, 0.84)`);
+    g.addColorStop(0.38, `rgba(${haloRgb}, ${haloAlpha})`);
+    g.addColorStop(0.68, `rgba(${haloRgb}, ${(haloAlpha * 0.28).toFixed(3)})`);
     g.addColorStop(1, `rgba(${haloRgb}, 0)`);
     sctx.fillStyle = g;
     sctx.fillRect(0, 0, size, size);
@@ -489,14 +489,14 @@ function initParticles() {
   };
 
   const sprites = {
-    whiteSoft: createStarSprite('255, 255, 255', '235, 244, 255', 0.28),
-    iceBlue: createStarSprite('246, 250, 255', '175, 212, 255', 0.34),
-    deepBlue: createStarSprite('232, 242, 255', '128, 184, 255', 0.38),
+    snowWhite: createDustSprite('255, 255, 255', '238, 246, 255', 0.34),
+    softBlue: createDustSprite('232, 244, 255', '147, 197, 253', 0.38),
+    subtleCyan: createDustSprite('224, 249, 255', '103, 232, 249', 0.36),
   };
 
   let w = 0;
   let h = 0;
-  let stars = [];
+  let dust = [];
   let pointerTargetX = 0;
   let pointerTargetY = 0;
   let pointerCurX = 0;
@@ -511,55 +511,66 @@ function initParticles() {
     return clamped * clamped * (3 - 2 * clamped);
   };
 
-  function createStarsForViewport() {
+  function getTargetParticleCount() {
     const mobile = isSmallViewport();
-    const total = mobile ? (isLowPowerDevice ? 190 : 270) : isLowPowerDevice ? 440 : 650;
+    if (mobile) return isLowPowerDevice ? 85 : 115;
+    return isLowPowerDevice ? 180 : 255;
+  }
+
+  function createParticlesForViewport() {
+    const total = getTargetParticleCount();
     const list = [];
 
-    // 3 explicit parallax & luminosity tiers (far faint 58%, mid crisp 34%, near bright 8%)
+    // 3 spatial depth layers: far micro-dust (48%), mid floating dust (36%), near soft-glow motes (16%)
     for (let i = 0; i < total; i += 1) {
-      const tierRoll = i / total;
+      const roll = i / total;
       let layer = 0;
-      if (tierRoll > 0.915) layer = 2;
-      else if (tierRoll > 0.58) layer = 1;
+      if (roll > 0.84) layer = 2;
+      else if (roll > 0.48) layer = 1;
 
       const depth =
         layer === 0
-          ? 0.22 + Math.random() * 0.24
+          ? 0.18 + Math.random() * 0.2
           : layer === 1
-            ? 0.48 + Math.random() * 0.28
-            : 0.78 + Math.random() * 0.36;
+            ? 0.44 + Math.random() * 0.26
+            : 0.76 + Math.random() * 0.32;
 
-      // Natural upward speed scaled continuously by depth (~16px/s far, ~30px/s mid, ~50px/s near)
-      const baseSpeed = layer === 0 ? 0.017 : layer === 1 ? 0.032 : 0.054;
-      const speedY = -(baseSpeed + depth * 0.018 + (Math.random() - 0.5) * 0.004);
-      const wobbleAmpX = (0.002 + Math.random() * 0.005) * (layer === 0 ? 0.5 : 1);
-      const wobbleFreq = 0.28 + Math.random() * 0.45;
+      // Gentle upward float speeds (~10-16 px/s far, ~18-27 px/s mid, ~28-40 px/s near)
+      const baseSpeed = layer === 0 ? 0.011 : layer === 1 ? 0.021 : 0.034;
+      const speedY = -(baseSpeed + depth * 0.012 + (Math.random() - 0.5) * 0.004);
+
+      // Organic lateral drift (some particles drift left, some right) + soft sway eddy
+      const driftSign = Math.random() > 0.5 ? 1 : -1;
+      const driftX = driftSign * (0.0018 + Math.random() * 0.0068) * (0.65 + depth * 0.6);
+      const wobbleAmpX = (0.003 + Math.random() * 0.008) * (0.6 + depth * 0.55);
+      const wobbleFreq = 0.24 + Math.random() * 0.44;
       const phase = Math.random() * Math.PI * 2;
-      const twinkleSpeed = 0.7 + Math.random() * 1.9;
-      const twinkleDepth = layer === 0 ? 0.16 : layer === 1 ? 0.24 : 0.3;
+      const twinkleSpeed = 0.48 + Math.random() * 1.15;
+      const twinkleDepth = layer === 0 ? 0.22 : layer === 1 ? 0.3 : 0.36;
 
+      // Soft snow-dust speck radii: tiny, small, and occasional slightly larger luminous motes
       const radius =
         layer === 0
-          ? 0.42 + Math.random() * 0.35
+          ? 0.7 + Math.random() * 0.55
           : layer === 1
-            ? 0.68 + Math.random() * 0.48
-            : 0.98 + Math.random() * 0.72;
+            ? 1.15 + Math.random() * 0.75
+            : 1.85 + Math.random() * 1.05;
 
       const baseAlpha =
         layer === 0
-          ? 0.16 + Math.random() * 0.28
+          ? 0.16 + Math.random() * 0.22
           : layer === 1
-            ? 0.4 + Math.random() * 0.36
-            : 0.66 + Math.random() * 0.3;
+            ? 0.32 + Math.random() * 0.3
+            : 0.48 + Math.random() * 0.32;
 
+      // Dominant white + light ice-blue + occasional subtle cyan
       const tintRoll = Math.random();
       const sprite =
-        tintRoll > 0.68
-          ? sprites.deepBlue
-          : tintRoll > 0.34
-            ? sprites.iceBlue
-            : sprites.whiteSoft;
+        tintRoll > 0.84
+          ? sprites.subtleCyan
+          : tintRoll > 0.46
+            ? sprites.softBlue
+            : sprites.snowWhite;
 
       list.push({
         x: Math.random(),
@@ -569,13 +580,14 @@ function initParticles() {
         radius,
         baseAlpha,
         speedY,
+        driftX,
         wobbleAmpX,
         wobbleFreq,
         phase,
         twinkleSpeed,
         twinkleDepth,
         sprite,
-        glowScale: layer === 2 ? 2.2 : layer === 1 ? 1.75 : 1.35,
+        glowScale: layer === 2 ? 3.1 : layer === 1 ? 2.55 : 2.15,
       });
     }
     return list;
@@ -590,9 +602,9 @@ function initParticles() {
     canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const expectedCount = mobile ? (isLowPowerDevice ? 190 : 270) : isLowPowerDevice ? 440 : 650;
-    if (stars.length !== expectedCount) {
-      stars = createStarsForViewport();
+    const expectedCount = getTargetParticleCount();
+    if (dust.length !== expectedCount) {
+      dust = createParticlesForViewport();
     }
     if (REDUCED_MOTION) drawFrame(0);
   }
@@ -600,54 +612,54 @@ function initParticles() {
   function drawFrame(dt) {
     ctx.clearRect(0, 0, w, h);
 
+    const mobile = isSmallViewport();
+
     if (!REDUCED_MOTION && dt > 0) {
       simClock += dt;
-      const follow = 1 - Math.exp(-dt / 0.35);
+      const follow = 1 - Math.exp(-dt / 0.38);
       const targetX = pointerActive ? -pointerTargetX : 0;
       const targetY = pointerActive ? -pointerTargetY : 0;
       pointerCurX += (targetX - pointerCurX) * follow;
       pointerCurY += (targetY - pointerCurY) * follow;
     }
 
-    const pxMaxShift = 22;
+    const pxMaxShift = mobile ? 10 : 24;
+    const spanY = 1.1;
 
-    for (let i = 0; i < stars.length; i += 1) {
-      const s = stars[i];
+    for (let i = 0; i < dust.length; i += 1) {
+      const p = dust[i];
       if (!REDUCED_MOTION && dt > 0) {
-        s.y += s.speedY * dt;
-        if (s.y < -0.04) {
-          s.y += 1.08;
-          s.x = Math.random();
+        p.y += p.speedY * dt;
+        p.x += p.driftX * dt;
+        if (p.y < -0.05) {
+          p.y += spanY;
+          p.x = Math.random();
         }
+        if (p.x < -0.04) p.x += 1.08;
+        else if (p.x > 1.04) p.x -= 1.08;
       }
 
-      // Soft bottom entry & top exit edge vignette so stars never pop cleanly
-      const yNorm = (s.y + 0.04) / 1.08;
-      const edgeFade = smoothEdge(yNorm / 0.11) * smoothEdge((1 - yNorm) / 0.11);
+      // Soft bottom-entry & top-exit opacity fade for seamless infinite rise
+      const yNorm = (p.y + 0.05) / spanY;
+      const edgeFade = smoothEdge(yNorm / 0.12) * smoothEdge((1 - yNorm) / 0.12);
       if (edgeFade <= 0.005) continue;
 
       const shimmer = REDUCED_MOTION
         ? 1
-        : 1 - s.twinkleDepth * (0.5 + 0.5 * Math.sin(simClock * s.twinkleSpeed + s.phase));
+        : 1 - p.twinkleDepth * (0.5 + 0.5 * Math.sin(simClock * p.twinkleSpeed + p.phase));
 
-      const alpha = s.baseAlpha * edgeFade * shimmer;
+      const alpha = p.baseAlpha * edgeFade * shimmer;
       if (alpha <= 0.01) continue;
 
-      const swayX = REDUCED_MOTION ? 0 : Math.sin(simClock * s.wobbleFreq + s.phase) * s.wobbleAmpX;
-      const parallaxX = pointerCurX * pxMaxShift * s.depth;
-      const parallaxY = pointerCurY * pxMaxShift * s.depth;
-      const sx = (((s.x + swayX) % 1) + 1) % 1 * w + parallaxX;
-      const sy = s.y * h + parallaxY;
+      const swayX = REDUCED_MOTION ? 0 : Math.sin(simClock * p.wobbleFreq + p.phase) * p.wobbleAmpX;
+      const parallaxX = pointerCurX * pxMaxShift * p.depth;
+      const parallaxY = pointerCurY * pxMaxShift * p.depth;
+      const sx = (((p.x + swayX + 1.04) % 1.08) - 0.04) * w + parallaxX;
+      const sy = p.y * h + parallaxY;
 
+      const drawSize = p.radius * 2 * p.glowScale;
       ctx.globalAlpha = Math.min(1, alpha);
-      if (s.layer === 0 && s.radius < 0.72) {
-        ctx.fillStyle = s.sprite === sprites.whiteSoft ? '#ffffff' : '#dbeafe';
-        const d = s.radius * 1.5;
-        ctx.fillRect(sx - d * 0.5, sy - d * 0.5, d, d);
-      } else {
-        const drawSize = s.radius * 2 * s.glowScale;
-        ctx.drawImage(s.sprite, sx - drawSize * 0.5, sy - drawSize * 0.5, drawSize, drawSize);
-      }
+      ctx.drawImage(p.sprite, sx - drawSize * 0.5, sy - drawSize * 0.5, drawSize, drawSize);
     }
     ctx.globalAlpha = 1;
   }
@@ -706,26 +718,41 @@ function initAmbientParallax() {
 
   let targetY = window.scrollY;
   let currentY = targetY;
+  let rafId = 0;
 
-  window.addEventListener(
-    'scroll',
-    () => {
-      targetY = window.scrollY;
-    },
-    { passive: true },
-  );
-
-  function tick() {
-    currentY += (targetY - currentY) * 0.06;
+  function applyTransforms() {
     orbs.forEach((orb, i) => {
       const factor = (i === 1 ? -0.035 : 0.025) * (i + 1);
       const dy = Math.max(-80, Math.min(80, currentY * factor * 0.4));
       const dx = Math.sin(currentY * 0.001 + i) * 14;
       orb.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0)`;
     });
-    window.requestAnimationFrame(tick);
   }
-  tick();
+
+  function tick() {
+    currentY += (targetY - currentY) * 0.06;
+    applyTransforms();
+    if (Math.abs(targetY - currentY) > 0.05) {
+      rafId = window.requestAnimationFrame(tick);
+    } else {
+      currentY = targetY;
+      applyTransforms();
+      rafId = 0;
+    }
+  }
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      targetY = window.scrollY;
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(tick);
+      }
+    },
+    { passive: true },
+  );
+
+  applyTransforms();
 }
 
 /* ========================================================================

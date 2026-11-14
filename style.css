@@ -472,19 +472,19 @@ body,
 }
 
 .gsap-ambient-orb-one {
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.36), rgba(37, 99, 235, 0));
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.34) 0%, rgba(37, 99, 235, 0.12) 38%, rgba(37, 99, 235, 0) 70%);
   top: 8%;
   left: -11%;
 }
 
 .gsap-ambient-orb-two {
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.23), rgba(14, 165, 233, 0));
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(14, 165, 233, 0.08) 38%, rgba(14, 165, 233, 0) 70%);
   top: 30%;
   right: -17%;
 }
 
 .gsap-ambient-orb-three {
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0));
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(99, 102, 241, 0.06) 38%, rgba(99, 102, 241, 0) 70%);
   width: clamp(220px, 28vw, 420px);
   bottom: -23%;
   left: 30%;
@@ -496,17 +496,21 @@ body,
   }
 }
 
-.particles-background {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
 .particles-container {
   width: 100%;
   height: 100%;
   position: relative;
+  overflow: hidden;
+}
+
+.particles-background,
+.particles-container.particles-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
   overflow: hidden;
 }
 
@@ -957,7 +961,7 @@ body,
    Hero & Interactive 3D Lanyard
    ================================================================ */
 .lanyard {
-  touch-action: none;
+  touch-action: pan-y;
   width: 100%;
   height: 100%;
   position: relative;
@@ -965,15 +969,11 @@ body,
 }
 
 .lanyard-canvas {
-  cursor: grab;
+  cursor: default;
   outline: none;
   width: 100%;
   height: 100%;
   display: block;
-}
-
-.lanyard-canvas:active {
-  cursor: grabbing;
 }
 
 .lanyard-card-container {
@@ -1308,7 +1308,7 @@ body,
 
 .about-intro,
 .about-bio {
-  z-index: 2;
+  z-index: 4;
   position: relative;
 }
 
@@ -1391,6 +1391,11 @@ body,
   display: flex;
   position: relative;
   transform: translateX(-28px);
+  cursor: default;
+}
+
+.about-portrait-stage.is-portrait-hovered,
+.about-portrait-stage.spider-hovered {
   cursor: crosshair;
 }
 
@@ -1406,13 +1411,13 @@ body,
   left: 5%;
   right: 5%;
   pointer-events: none;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.25s ease, filter 0.25s ease;
 }
 
 .about-portrait-stage.spider-hovered .about-portrait-glow,
 .about-portrait-stage[data-spider-visible="true"] .about-portrait-glow {
   background:
-    radial-gradient(at 50% 35%, rgba(234, 38, 64, 0.4), transparent 45%),
+    radial-gradient(at 50% 35%, rgba(234, 38, 64, 0.36), transparent 45%),
     radial-gradient(at 48% 68%, rgba(30, 112, 226, 0.46), transparent 65%);
 }
 
@@ -1424,6 +1429,28 @@ body,
   pointer-events: none;
   -webkit-mask-image: linear-gradient(#000 0%, #000 76%, rgba(0, 0, 0, 0.74) 88%, transparent 100%);
   mask-image: linear-gradient(#000 0%, #000 76%, rgba(0, 0, 0, 0.74) 88%, transparent 100%);
+}
+
+.about-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse calc(var(--hover-rx, 134px) * 1.18) calc(var(--hover-ry, 134px) * 1.18)
+      at calc(var(--hover-x, 50%) + var(--spider-shift-x, 0px)) calc(var(--hover-y, 50%) + var(--spider-shift-y, 0px)),
+    rgba(239, 44, 68, 0.14) 0%,
+    rgba(239, 44, 68, 0.06) 46%,
+    transparent 74%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.16s ease-out;
+}
+
+.about-portrait-stage.spider-hovered .about-portrait::after {
+  opacity: 1;
 }
 
 .about-person-image,
@@ -1442,16 +1469,16 @@ body,
 .about-person-image {
   z-index: 1;
   filter: drop-shadow(0 16px 35px rgba(0, 0, 0, 0.28));
-  transition: opacity 0.22s ease;
+  transition: opacity 0.2s ease;
 }
 
 .about-spider-image {
   z-index: 2;
   opacity: 0;
-  filter: saturate(1.12) contrast(1.05) drop-shadow(0 6px 22px rgba(220, 24, 52, 0.28));
-  -webkit-mask-image: radial-gradient(circle 138px at var(--hover-x, 50%) var(--hover-y, 50%), #000 0%, #000 58%, transparent 100%);
-  mask-image: radial-gradient(circle 138px at var(--hover-x, 50%) var(--hover-y, 50%), #000 0%, #000 58%, transparent 100%);
-  transition: opacity 0.22s ease;
+  filter: saturate(1.12) contrast(1.05) drop-shadow(var(--spider-shift-x, 0px) calc(6px + var(--spider-shift-y, 0px)) 20px rgba(220, 24, 52, 0.3));
+  -webkit-mask-image: radial-gradient(ellipse var(--hover-rx, 134px) var(--hover-ry, 134px) at var(--hover-x, 50%) var(--hover-y, 50%), #000 0%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse var(--hover-rx, 134px) var(--hover-ry, 134px) at var(--hover-x, 50%) var(--hover-y, 50%), #000 0%, #000 58%, transparent 100%);
+  transition: opacity 0.16s ease-out;
   will-change: opacity, mask-image, -webkit-mask-image;
 }
 
@@ -1792,12 +1819,29 @@ body,
   color: rgb(147, 197, 253);
 }
 
-.experience-logo img,
 .experience-logo svg {
   object-fit: contain;
   width: 34px;
   height: 34px;
   display: block;
+}
+
+.experience-logo img {
+  object-fit: contain;
+  width: 46px;
+  height: 46px;
+  display: block;
+}
+
+.experience-logo--photo {
+  overflow: hidden;
+  padding: 0;
+}
+
+.experience-logo--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .experience-card-copy {

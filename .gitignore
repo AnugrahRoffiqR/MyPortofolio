@@ -8,13 +8,3 @@ opencode.json
 # bukan bagian dari situs
 .taste-skill/
 __pycache__/
-
-# dependency & secret / Vercel local config (jangan pernah masuk Git)
-node_modules/
-.vercel/
-.env
-.env.*
-
-
-.vercel
-.env*

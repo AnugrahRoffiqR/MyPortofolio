@@ -3,9 +3,9 @@ import * as THREE from 'three';
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COMMENTS_STORAGE_KEY = 'nugi_portfolio_comments_v1';
 const COMMENTS_MIGRATED_KEY = 'nugi_portfolio_comments_migrated_v1';
-const PORTFOLIO_API_BASE = window.location.hostname.endsWith('.vercel.app')
-  ? ''
-  : 'https://myportofolio-omega-snowy.vercel.app';
+const SUPABASE_URL = 'https://edimjiwrfqidlqvrzjyy.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OpyeuRr_R6qSW1zOfNHrWg_uN8S5LuL';
+const SUPABASE_COMMENTS_ENDPOINT = `${SUPABASE_URL}/rest/v1/comments`;
 const EMAIL_ADDRESS = 'nugi5555.a@gmail.com';
 
 /* ========================================================================
@@ -3172,7 +3172,7 @@ function initContactAndComments() {
     }
   });
 
-  // Visitor Comments Guestbook (Global Cloud Sync via /api/comments)
+  // Visitor Comments Guestbook (Global Cloud Sync via Supabase)
   const commentForm = document.getElementById('comment-form');
   const commentName = document.getElementById('comment-name');
   const commentMsg = document.getElementById('comment-message');
@@ -3187,6 +3187,65 @@ function initContactAndComments() {
   const SAFE_AVATAR_RE = /^data:image\/(webp|png|jpeg|gif);base64,[A-Za-z0-9+/=]+$/i;
   let pendingAvatar = '';
   let cachedComments = [];
+
+  function sanitizeAvatar(raw) {
+    if (typeof raw !== 'string') return '';
+    return raw.length <= 65536 && SAFE_AVATAR_RE.test(raw) ? raw : '';
+  }
+
+  function normalizeComment(row) {
+    if (!row || typeof row !== 'object') return null;
+    const name = typeof row.name === 'string' ? row.name.trim() : '';
+    const message = typeof row.message === 'string' ? row.message.trim() : '';
+    if (!name || !message) return null;
+    return {
+      id: row.id ? String(row.id) : '',
+      name,
+      message,
+      avatar: sanitizeAvatar(row.avatar),
+      createdAt: row.created_at || row.createdAt || new Date().toISOString(),
+    };
+  }
+
+  async function fetchRemoteComments() {
+    const url = `${SUPABASE_COMMENTS_ENDPOINT}?select=id,name,message,avatar,created_at&order=created_at.desc&limit=100`;
+    const res = await fetch(url, {
+      headers: { apikey: SUPABASE_PUBLISHABLE_KEY },
+      cache: 'no-store',
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    return Array.isArray(rows) ? rows.map(normalizeComment).filter(Boolean) : [];
+  }
+
+  async function insertRemoteComment({ name, message, avatar, createdAt }) {
+    const payload = {
+      name: String(name).trim().slice(0, 80),
+      message: String(message).trim().slice(0, 1000),
+      avatar: sanitizeAvatar(avatar),
+    };
+    if (typeof createdAt === 'string' && !Number.isNaN(Date.parse(createdAt))) {
+      payload.created_at = new Date(createdAt).toISOString();
+    }
+
+    const res = await fetch(SUPABASE_COMMENTS_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      throw new Error(data?.message || data?.error || 'Gagal mengirim komentar.');
+    }
+    const row = Array.isArray(data) ? data[0] : data;
+    const normalized = normalizeComment(row);
+    if (!normalized) throw new Error('Respons server komentar tidak valid.');
+    return normalized;
+  }
 
   function readLegacyLocalComments() {
     try {
@@ -3215,7 +3274,7 @@ function initContactAndComments() {
       const article = document.createElement('article');
       article.className = 'contact-comment-item';
 
-      if (typeof item.avatar === 'string' && SAFE_AVATAR_RE.test(item.avatar)) {
+      if (sanitizeAvatar(item.avatar)) {
         const img = document.createElement('img');
         img.className = 'contact-comment-avatar';
         img.src = item.avatar;
@@ -3268,17 +3327,12 @@ function initContactAndComments() {
         );
         if (alreadyRemote) continue;
 
-        const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: String(local.name).slice(0, 80),
-            message: String(local.message).slice(0, 1000),
-            avatar: typeof local.avatar === 'string' ? local.avatar : '',
-            createdAt: typeof local.createdAt === 'string' ? local.createdAt : undefined,
-          }),
+        await insertRemoteComment({
+          name: local.name,
+          message: local.message,
+          avatar: local.avatar,
+          createdAt: local.createdAt,
         });
-        if (!res.ok) return false;
         migratedAny = true;
       }
 
@@ -3291,20 +3345,11 @@ function initContactAndComments() {
 
   async function syncComments() {
     try {
-      const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      let items = Array.isArray(data?.comments) ? data.comments : [];
-
+      let items = await fetchRemoteComments();
       const migrated = await migrateLegacyCommentsIfNeeded(items);
       if (migrated) {
-        const refreshed = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, { cache: 'no-store' });
-        if (refreshed.ok) {
-          const refreshedData = await refreshed.json();
-          if (Array.isArray(refreshedData?.comments)) items = refreshedData.comments;
-        }
+        items = await fetchRemoteComments();
       }
-
       cachedComments = items;
       renderComments(cachedComments);
     } catch {
@@ -3330,7 +3375,7 @@ function initContactAndComments() {
       return;
     }
     try {
-      pendingAvatar = await resizeAvatarToDataUrl(file);
+      pendingAvatar = sanitizeAvatar(await resizeAvatarToDataUrl(file));
       if (photoLabel) photoLabel.querySelector('span').textContent = file.name;
     } catch {
       pendingAvatar = '';
@@ -3350,23 +3395,15 @@ function initContactAndComments() {
     if (commentSubmitLabel) commentSubmitLabel.textContent = 'Mengirim...';
 
     try {
-      const res = await fetch(`${PORTFOLIO_API_BASE}/api/comments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: nameVal.slice(0, 80),
-          message: msgVal.slice(0, 1000),
-          avatar: pendingAvatar,
-        }),
+      const created = await insertRemoteComment({
+        name: nameVal,
+        message: msgVal,
+        avatar: pendingAvatar,
       });
-      const data = await res.json().catch(() => null);
-      if (!res.ok || !data?.comment) {
-        throw new Error(data?.error || 'Gagal mengirim komentar.');
-      }
 
-      const exists = cachedComments.some((c) => c.id && c.id === data.comment.id);
+      const exists = cachedComments.some((c) => c.id && c.id === created.id);
       if (!exists) {
-        cachedComments = [data.comment, ...cachedComments];
+        cachedComments = [created, ...cachedComments];
       }
       renderComments(cachedComments);
 

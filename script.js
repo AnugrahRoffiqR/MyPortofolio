@@ -353,8 +353,85 @@ function initPreloader() {
 /* ========================================================================
    Navbar Scrollspy, Active Pill, Mobile Drawer & SFX Toggle
    ======================================================================== */
+function supportsSvgBackdropFilter(filterId) {
+  const ua = navigator.userAgent;
+  const isFirefox = /Firefox/i.test(ua);
+  const isWebKit = /AppleWebKit/i.test(ua) && !/Chrome|Chromium|Edg/i.test(ua);
+  if (isFirefox || isWebKit) return false;
+  const probe = document.createElement('div');
+  probe.style.backdropFilter = `url(#${filterId})`;
+  return probe.style.backdropFilter !== '';
+}
+
+function buildGlassDisplacementUri(width, height, uid) {
+  const w = Math.max(1, Number(width.toFixed(4)));
+  const h = Math.max(1, Number(height.toFixed(4)));
+  const edge = Math.min(w, h) * 0.035;
+  const innerW = Math.max(1, w - edge * 2);
+  const innerH = Math.max(1, h - edge * 2);
+  const svg = `
+      <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="red-grad-${uid}" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#0000"/>
+            <stop offset="100%" stop-color="red"/>
+          </linearGradient>
+          <linearGradient id="blue-grad-${uid}" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0000"/>
+            <stop offset="100%" stop-color="blue"/>
+          </linearGradient>
+          <filter id="soft-${uid}" filterUnits="userSpaceOnUse" x="0" y="0" width="${w}" height="${h}" color-interpolation-filters="sRGB">
+            <feGaussianBlur stdDeviation="14" />
+          </filter>
+        </defs>
+        <rect x="0" y="0" width="${w}" height="${h}" fill="black"></rect>
+        <rect x="0" y="0" width="${w}" height="${h}" rx="999" fill="url(#red-grad-${uid})" />
+        <rect x="0" y="0" width="${w}" height="${h}" rx="999" fill="url(#blue-grad-${uid})" style="mix-blend-mode: difference" />
+        <rect x="${edge}" y="${edge}" width="${innerW}" height="${innerH}" rx="999" fill="hsl(0 0% 50% / 0.93)" filter="url(#soft-${uid})" />
+      </svg>
+    `;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function initLiquidGlassNav(surfaceEl) {
+  if (!surfaceEl) return;
+  const mapEl = document.getElementById('glass-filter-nav-map');
+  if (!mapEl || !supportsSvgBackdropFilter('glass-filter-nav')) {
+    surfaceEl.classList.remove('glass-surface--svg');
+    surfaceEl.classList.add('glass-surface--fallback');
+    return;
+  }
+
+  let lastKey = '';
+  let rafId = 0;
+
+  const updateMap = () => {
+    rafId = 0;
+    const rect = surfaceEl.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const key = `${rect.width.toFixed(1)}x${rect.height.toFixed(1)}`;
+    if (key === lastKey) return;
+    lastKey = key;
+    mapEl.setAttribute('href', buildGlassDisplacementUri(rect.width, rect.height, 'nav'));
+  };
+
+  const scheduleUpdate = () => {
+    if (!rafId) rafId = window.requestAnimationFrame(updateMap);
+  };
+
+  updateMap();
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(scheduleUpdate);
+    ro.observe(surfaceEl);
+  } else {
+    window.addEventListener('resize', scheduleUpdate);
+  }
+  document.fonts?.ready?.then(scheduleUpdate);
+}
+
 function initNavbar() {
   const navbar = document.getElementById('site-navbar');
+  const glassSurface = navbar?.querySelector('.navbar-container');
   const desktopNav = document.getElementById('navbar-desktop-links');
   const pill = document.getElementById('navbar-active-pill');
   const links = [...document.querySelectorAll('.navbar-link-item')];
@@ -364,6 +441,8 @@ function initNavbar() {
   const sfxBtn = document.getElementById('sfx-toggle-btn');
   const sfxIconOn = document.getElementById('sfx-icon-on');
   const sfxIconOff = document.getElementById('sfx-icon-off');
+
+  initLiquidGlassNav(glassSurface);
 
   let activeId = 'Home';
 

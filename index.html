@@ -141,8 +141,26 @@
               <defs>
                 <filter id="glass-filter-nav" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%"
                   height="100%">
-                  <feGaussianBlur in="SourceGraphic" stdDeviation="0.25" result="blur"></feGaussianBlur>
-                  <feColorMatrix in="blur" type="saturate" values="1.25"></feColorMatrix>
+                  <feImage id="glass-filter-nav-map" x="0" y="0" width="100%" height="100%"
+                    preserveAspectRatio="none" result="map" href=""></feImage>
+                  <feDisplacementMap in="SourceGraphic" in2="map" id="redchannel" result="dispRed" scale="-70"
+                    xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+                  <feColorMatrix in="dispRed" type="matrix"
+                    values="1 0 0 0 0&#10;                      0 0 0 0 0&#10;                      0 0 0 0 0&#10;                      0 0 0 1 0"
+                    result="red"></feColorMatrix>
+                  <feDisplacementMap in="SourceGraphic" in2="map" id="greenchannel" result="dispGreen" scale="-66"
+                    xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+                  <feColorMatrix in="dispGreen" type="matrix"
+                    values="0 0 0 0 0&#10;                      0 1 0 0 0&#10;                      0 0 0 0 0&#10;                      0 0 0 1 0"
+                    result="green"></feColorMatrix>
+                  <feDisplacementMap in="SourceGraphic" in2="map" id="bluechannel" result="dispBlue" scale="-62"
+                    xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+                  <feColorMatrix in="dispBlue" type="matrix"
+                    values="0 0 0 0 0&#10;                      0 0 0 0 0&#10;                      0 0 1 0 0&#10;                      0 0 0 1 0"
+                    result="blue"></feColorMatrix>
+                  <feBlend in="red" in2="green" mode="screen" result="rg"></feBlend>
+                  <feBlend in="rg" in2="blue" mode="screen" result="output"></feBlend>
+                  <feGaussianBlur in="output" stdDeviation="0.25"></feGaussianBlur>
                 </filter>
               </defs>
             </svg>
@@ -165,7 +183,7 @@
                 <button type="button" id="sfx-toggle-btn" class="navbar-icon-btn" title="Matikan Suara SFX"
                   aria-label="Aktifkan atau matikan efek suara" aria-pressed="true">
                   <svg id="sfx-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     aria-hidden="true">
                     <path
                       d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z">

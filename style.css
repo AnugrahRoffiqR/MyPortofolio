@@ -618,25 +618,25 @@ body,
 }
 
 .glass-surface--svg {
-  background: rgba(5, 10, 22, 0.36);
-  backdrop-filter: var(--filter-id, url(#glass-filter-nav)) blur(14px) saturate(1.25);
+  background: hsl(0 0% 0% / var(--glass-frost, 0.08));
+  backdrop-filter: var(--filter-id, url(#glass-filter-nav)) saturate(var(--glass-saturation, 1));
   box-shadow:
-    inset 0 0 2px 1px rgba(255, 255, 255, 0.28),
-    inset 0 0 10px 4px rgba(255, 255, 255, 0.1),
+    inset 0 0 2px 1px rgba(255, 255, 255, 0.22),
+    inset 0 0 10px 4px rgba(255, 255, 255, 0.06),
     0 4px 16px rgba(17, 17, 26, 0.08),
     0 8px 24px rgba(17, 17, 26, 0.08),
     0 16px 56px rgba(17, 17, 26, 0.08);
 }
 
 .glass-surface--fallback {
-  background: rgba(15, 23, 42, 0.52);
-  backdrop-filter: blur(14px) saturate(1.4) brightness(1.05);
+  background: rgba(8, 12, 24, 0.72);
+  backdrop-filter: blur(18px) saturate(1.5);
   box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.3),
-    inset 0 -1px rgba(255, 255, 255, 0.08),
-    inset 0 0 2px 1px rgba(255, 255, 255, 0.22),
-    inset 0 0 12px 3px rgba(255, 255, 255, 0.08),
-    0 8px 28px rgba(0, 0, 0, 0.28);
+    inset 0 1px rgba(255, 255, 255, 0.24),
+    inset 0 -1px rgba(255, 255, 255, 0.06),
+    inset 0 0 2px 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 10px 3px rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.36);
 }
 
 .glass-surface__sheen,
@@ -650,9 +650,9 @@ body,
 .glass-surface__sheen {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.14) 0%,
-    transparent 42% 64%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 40% 66%,
+    rgba(255, 255, 255, 0.04) 100%
   );
 }
 
@@ -660,8 +660,8 @@ body,
   background: linear-gradient(
     150deg,
     rgba(255, 255, 255, 0.34),
-    rgba(255, 255, 255, 0.03) 45%,
-    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.02) 62%,
     rgba(255, 255, 255, 0.18)
   );
   padding: 1px;
@@ -703,7 +703,7 @@ body,
   gap: 8px;
   width: auto;
   height: auto;
-  padding: 8px 12px;
+  padding: 7px 11px;
 }
 
 .navbar-links {
@@ -715,19 +715,21 @@ body,
 
 .navbar-link-item {
   z-index: 0;
-  color: rgba(248, 250, 252, 0.76);
+  color: rgba(244, 244, 245, 0.8);
   border-radius: 999px;
-  padding: 12px 22px;
-  font-size: 1rem;
-  font-weight: 700;
+  padding: 11px 21px;
+  font-size: 0.96875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  transition: color 0.2s, background 0.2s;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  transition: color 0.2s ease, background 0.2s ease;
   position: relative;
 }
 
 .navbar-link-item:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .navbar-link-item.is-active {
@@ -739,15 +741,15 @@ body,
   z-index: 0;
   border-radius: 999px;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(59, 130, 246, 0.13));
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(59, 130, 246, 0.09));
+  border: 1px solid rgba(255, 255, 255, 0.16);
   display: block;
   position: absolute;
   top: 0;
   left: 0;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 0 24px rgba(59, 130, 246, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 20px rgba(59, 130, 246, 0.2);
   transition:
     transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
     width 0.36s cubic-bezier(0.22, 1, 0.36, 1),
@@ -766,50 +768,64 @@ body,
 
 .navbar-actions {
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   display: flex;
 }
 
 .navbar-actions-divider {
-  background: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.2);
   width: 1px;
-  height: 24px;
+  height: 22px;
 }
 
 .navbar-icon-btn {
-  color: rgb(248, 250, 252);
+  color: #ffffff;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
   justify-content: center;
   align-items: center;
   width: 34px;
   height: 34px;
   padding: 0;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
   display: flex;
 }
 
 .navbar-icon-btn:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.navbar-icon-btn:active,
+.navbar-mobile-toggle:active {
+  transform: scale(0.94);
 }
 
 .navbar-icon-btn.is-muted {
-  color: rgb(148, 163, 184);
+  color: rgba(226, 232, 240, 0.65);
 }
 
 .navbar-mobile-toggle {
   color: #ffffff;
   cursor: pointer;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   display: none;
+}
+
+.navbar-mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .navbar-mobile-menu {
@@ -819,9 +835,9 @@ body,
   transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s linear;
   display: block;
   position: fixed;
-  top: 72px;
-  left: 16px;
-  right: 16px;
+  top: 80px;
+  left: 12px;
+  right: 12px;
   overflow: hidden;
   z-index: 999;
 }
@@ -961,18 +977,13 @@ body,
 
   .navbar-container.glass-surface--fallback,
   .navbar-mobile-glass.glass-surface--fallback {
-    backdrop-filter: blur(8px) saturate(1.35) brightness(1.06);
-    background: linear-gradient(
-      135deg,
-      rgba(176, 205, 255, 0.22),
-      rgba(35, 51, 78, 0.22) 48%,
-      rgba(145, 177, 225, 0.14)
-    );
-    border: 1px solid rgba(220, 235, 255, 0.36);
+    backdrop-filter: blur(18px) saturate(1.5);
+    background: rgba(8, 12, 24, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     box-shadow:
-      inset 0 1px rgba(255, 255, 255, 0.45),
-      inset 0 -1px rgba(255, 255, 255, 0.14),
-      0 8px 24px rgba(0, 0, 0, 0.24);
+      inset 0 1px rgba(255, 255, 255, 0.24),
+      inset 0 -1px rgba(255, 255, 255, 0.06),
+      0 12px 32px rgba(0, 0, 0, 0.42);
   }
 }
 

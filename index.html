@@ -609,23 +609,25 @@
                   </svg>
                   <span>Projects</span>
                 </button>
-                <button type="button" class="portfolio-tab-btn" role="tab" aria-selected="false" data-tab="design">
+                <button type="button" class="portfolio-tab-btn" role="tab" aria-selected="false" data-tab="certificates">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-                    <path d="M2 2l7.586 7.586"></path>
-                    <circle cx="11" cy="11" r="2"></circle>
+                    <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                    <circle cx="12" cy="8" r="6"></circle>
                   </svg>
-                  <span>UI/UX Design</span>
+                  <span>Certificates</span>
                 </button>
-                <button type="button" class="portfolio-tab-btn" role="tab" aria-selected="false" data-tab="learning">
+                <button type="button" class="portfolio-tab-btn" role="tab" aria-selected="false" data-tab="achievements">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20">
-                    </path>
+                    <path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"></path>
+                    <path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"></path>
+                    <path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"></path>
+                    <path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"></path>
                   </svg>
-                  <span>Learning Path</span>
+                  <span>Achievements</span>
                 </button>
                 <button type="button" class="portfolio-tab-btn" role="tab" aria-selected="false" data-tab="tech">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -654,14 +656,14 @@
                 <div id="projects-grid" class="portfolio-cards-grid"></div>
               </div>
 
-              <!-- Tab 2: UI/UX Design -->
-              <div id="tab-design" class="portfolio-tab-panel" role="tabpanel" hidden>
-                <div id="design-grid" class="portfolio-showcase-grid"></div>
+              <!-- Tab 2: Certificates -->
+              <div id="tab-certificates" class="portfolio-tab-panel" role="tabpanel" hidden>
+                <div id="certificates-grid" class="portfolio-certificates-grid"></div>
               </div>
 
-              <!-- Tab 3: Learning Path -->
-              <div id="tab-learning" class="portfolio-tab-panel" role="tabpanel" hidden>
-                <div id="learning-grid" class="portfolio-showcase-grid"></div>
+              <!-- Tab 3: Achievements -->
+              <div id="tab-achievements" class="portfolio-tab-panel" role="tabpanel" hidden>
+                <div id="achievements-grid" class="portfolio-achievements-grid"></div>
               </div>
 
               <!-- Tab 4: Tech Stack -->
@@ -1072,6 +1074,9 @@
       </main>
     </div>
   </div>
+
+  <!-- Dedicated Figcraft-Style Print / PDF Portfolio Deck (visible only in @media print) -->
+  <section id="print-portfolio-deck" class="print-deck" aria-hidden="true"></section>
 
   <script type="module" src="script.js"></script>
 </body>

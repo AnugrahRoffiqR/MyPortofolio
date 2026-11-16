@@ -2535,15 +2535,15 @@ body,
 
   .portfolio-tab-btn {
     text-align: center;
-    white-space: normal;
+    white-space: nowrap;
     border-radius: 10px;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
     min-width: 0;
     min-height: 58px;
-    padding: 7px 2px;
-    font-size: clamp(0.58rem, 2.4vw, 0.76rem);
+    padding: 7px 1px;
+    font-size: clamp(0.54rem, 2.2vw, 0.76rem);
     line-height: 1.15;
   }
 
@@ -2704,95 +2704,296 @@ body,
   }
 }
 
-/* Showcase cards for UI/UX & Learning Path tabs */
-.portfolio-showcase-grid {
+/* Certificates & Achievements Grid (Matches alfari.my.id reference layout) */
+.portfolio-certificates-grid {
+  display: grid;
   grid-template-columns: 1fr;
   gap: 1.75rem;
-  display: grid;
 }
 
-@media (min-width: 768px) {
-  .portfolio-showcase-grid {
+@media (min-width: 640px) {
+  .portfolio-certificates-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1100px) {
-  .portfolio-showcase-grid {
+@media (min-width: 1024px) {
+  .portfolio-certificates-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-.portfolio-showcase-card {
-  background:
-    radial-gradient(at 100% 0%, rgba(44, 103, 237, 0.12), transparent 52%),
-    linear-gradient(135deg, rgba(18, 27, 44, 0.92), rgba(10, 16, 28, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 18px;
-  padding: 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.portfolio-cert-card {
   position: relative;
   overflow: hidden;
-  transition: transform 0.22s, border-color 0.22s;
+  padding: 0;
+  border-radius: 14px;
+  background: rgb(244, 239, 228);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
 }
 
-.portfolio-showcase-card:hover {
+.portfolio-cert-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(96, 165, 250, 0.36);
+  border-color: rgba(96, 165, 250, 0.42);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
 }
 
-.portfolio-showcase-icon {
+.portfolio-cert-card:focus-visible {
+  outline: 2px solid rgb(96, 165, 250);
+  outline-offset: 4px;
+}
+
+.portfolio-cert-preview {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.414;
+  background: rgb(244, 239, 228);
+}
+
+.portfolio-cert-preview-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgb(244, 239, 228);
+}
+
+.portfolio-cert-preview-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: rgba(3, 7, 18, 0.52);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.portfolio-cert-card:hover .portfolio-cert-preview-overlay,
+.portfolio-cert-card:focus-visible .portfolio-cert-preview-overlay {
+  opacity: 1;
+}
+
+/* Fullscreen Certificate / Transcript Lightbox Viewer */
+.portfolio-cert-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 11000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 1rem;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.portfolio-cert-viewer-close {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 2;
   width: 48px;
   height: 48px;
-  border-radius: 13px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.portfolio-cert-viewer-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: rotate(90deg);
+}
+
+.portfolio-cert-viewer-close:focus-visible,
+.portfolio-cert-viewer-page-btn:focus-visible,
+.portfolio-cert-viewer-nav-btn:focus-visible {
+  outline: 2px solid rgb(96, 165, 250);
+  outline-offset: 2px;
+}
+
+.portfolio-cert-viewer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 90vw;
+  max-height: 82dvh;
+  overscroll-behavior: none;
+  background: transparent;
+}
+
+.portfolio-cert-viewer-image {
+  display: block;
+  width: auto;
+  max-width: 90vw;
+  height: auto;
+  max-height: 82dvh;
+  border-radius: 10px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+.portfolio-cert-viewer-controls {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: calc(100vw - 2rem);
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(10, 15, 32, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.portfolio-cert-viewer-page-btn,
+.portfolio-cert-viewer-nav-btn {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(203, 213, 225);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  transition: background 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.portfolio-cert-viewer-page-btn:hover,
+.portfolio-cert-viewer-nav-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.portfolio-cert-viewer-page-btn.is-active {
+  color: #ffffff;
+  background: rgb(44, 103, 237);
+  box-shadow: 0 0 16px rgba(44, 103, 237, 0.4);
+}
+
+@media (max-width: 600px) {
+  .portfolio-cert-viewer-backdrop {
+    padding: 0.75rem;
+    gap: 10px;
+  }
+
+  .portfolio-cert-viewer,
+  .portfolio-cert-viewer-image {
+    max-width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 7.5rem);
+  }
+
+  .portfolio-cert-viewer-close {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 42px;
+    height: 42px;
+  }
+
+  .portfolio-cert-viewer-page-btn,
+  .portfolio-cert-viewer-nav-btn {
+    padding: 6px 11px;
+    font-size: 0.78rem;
+  }
+}
+
+/* Achievements Empty State (consistent with dark obsidian sky-blue theme) */
+.portfolio-achievements-empty {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 40px 28px;
+  border-radius: 18px;
+  background:
+    radial-gradient(at 50% 0%, rgba(44, 103, 237, 0.14), transparent 65%),
+    linear-gradient(135deg, rgba(18, 27, 44, 0.92), rgba(10, 16, 28, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.portfolio-achievements-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
   background: rgba(44, 103, 237, 0.16);
   border: 1px solid rgba(96, 165, 250, 0.28);
   color: rgb(147, 197, 253);
-  display: grid;
-  place-items: center;
+  margin-bottom: 4px;
 }
 
-.portfolio-showcase-meta {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgb(96, 165, 250);
-}
-
-.portfolio-showcase-card h3 {
+.portfolio-achievements-empty h3 {
   margin: 0;
-  font-size: 1.24rem;
+  font-size: 1.25rem;
   font-weight: 750;
   color: rgb(245, 247, 255);
-  line-height: 1.3;
 }
 
-.portfolio-showcase-card p {
+.portfolio-achievements-empty p {
   margin: 0;
+  max-width: 44ch;
   font-size: 0.95rem;
   line-height: 1.65;
   color: rgb(174, 184, 204);
 }
 
-.portfolio-showcase-tags {
-  display: flex;
-  flex-wrap: wrap;
+.portfolio-achievements-empty-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  margin-top: auto;
-  padding-top: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(96, 165, 250, 0.34);
+  background: rgba(44, 103, 237, 0.18);
+  color: rgb(219, 234, 254);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
-.portfolio-showcase-tags span {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: rgb(203, 213, 225);
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  padding: 5px 11px;
+.portfolio-achievements-empty-btn:hover {
+  background: rgb(44, 103, 237);
+  border-color: rgb(96, 165, 250);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-cert-card,
+  .portfolio-cert-preview-overlay,
+  .portfolio-cert-viewer-close,
+  .portfolio-achievements-empty-btn {
+    transition: none;
+  }
 }
 
 /* Tech Stack Grid (Matches alfari.my.id 6-column layout) */
@@ -4021,5 +4222,969 @@ body,
   .border-glow-card::after,
   .border-glow-card > .edge-light {
     transition: none;
+  }
+}
+
+/* ================================================================
+   Dedicated Print / PDF Portfolio Deck (Hidden on Screen)
+   ================================================================ */
+.print-deck,
+#print-portfolio-deck {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important;
+    transition: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body {
+    width: 297mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #040711 !important;
+    color: #f8fafc !important;
+    overflow: visible !important;
+    font-family: var(--font-body) !important;
+  }
+
+  #root,
+  .cursor-spotlight {
+    display: none !important;
+  }
+
+  #print-portfolio-deck,
+  .print-deck {
+    display: block !important;
+    width: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-slide {
+    position: relative;
+    width: 297mm;
+    height: 210mm;
+    padding: 10.5mm 14mm 9.5mm;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #040711 !important;
+    background-image:
+      radial-gradient(circle at 88% 12%, rgba(56, 189, 248, 0.14), transparent 40%),
+      radial-gradient(circle at 12% 90%, rgba(99, 102, 241, 0.13), transparent 44%),
+      linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px) !important;
+    background-size: auto, auto, 18mm 18mm, 18mm 18mm !important;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-slide-rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    flex-shrink: 0;
+  }
+
+  .print-rail-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+
+  .print-rail-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #38bdf8;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+  }
+
+  .print-rail-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #cbd5e1;
+  }
+
+  .print-page-pill {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #7dd3fc;
+    font-weight: 700;
+  }
+
+  .print-slide-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 0;
+    gap: 12px;
+  }
+
+  .print-slide-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .print-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    margin: 0 0 4px;
+  }
+
+  .print-slide-title {
+    margin: 0;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #f8fafc;
+  }
+
+  .print-slide-subtitle {
+    margin: 0;
+    max-width: 340px;
+    text-align: right;
+    font-size: 10px;
+    line-height: 1.45;
+    color: #94a3b8;
+  }
+
+  .print-slide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 6px;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .print-slide-footer-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .print-link,
+  .print-slide a {
+    color: #7dd3fc;
+    text-decoration: none;
+  }
+
+  .print-card {
+    background: rgba(11, 17, 32, 0.94);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 14px;
+    padding: 12px 14px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-section-label {
+    margin: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+  }
+
+  /* Slide 1: Cover + Hero + Static ID Badge */
+  .print-cover-grid {
+    display: grid;
+    grid-template-columns: 1.55fr 0.95fr;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .print-cover-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    color: #bae6fd;
+    margin-bottom: 12px;
+  }
+
+  .print-cover-name {
+    margin: 0;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+  }
+
+  .print-cover-name-accent {
+    color: #7dd3fc;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .print-cover-role {
+    margin: 10px 0 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #c7d2fe;
+    letter-spacing: 0.02em;
+  }
+
+  .print-cover-bio {
+    margin: 0 0 16px;
+    font-size: 11.5px;
+    line-height: 1.58;
+    color: #cbd5e1;
+    max-width: 96%;
+  }
+
+  .print-cover-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .print-stat-box {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+
+  .print-stat-box strong {
+    display: block;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 3px;
+  }
+
+  .print-stat-box span {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #7dd3fc;
+    margin-bottom: 2px;
+  }
+
+  .print-stat-box p {
+    margin: 0;
+    font-size: 8.8px;
+    line-height: 1.35;
+    color: #94a3b8;
+  }
+
+  .print-cover-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .print-chip-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #e2e8f0 !important;
+  }
+
+  .print-id-card {
+    background: linear-gradient(155deg, rgba(16, 24, 44, 0.98) 0%, rgba(8, 12, 24, 0.98) 100%);
+    border: 1px solid rgba(125, 211, 252, 0.34);
+    border-radius: 18px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .print-id-notch {
+    width: 48px;
+    height: 7px;
+    border-radius: 999px;
+    background: #040711;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    margin: 0 auto 12px;
+  }
+
+  .print-id-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    color: #7dd3fc;
+    margin-bottom: 10px;
+  }
+
+  .print-id-portrait-wrap {
+    width: 100%;
+    height: 214px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(125, 211, 252, 0.28);
+    background: radial-gradient(circle at 52% 44%, rgba(44, 103, 237, 0.44), rgba(7, 11, 24, 0.96) 74%);
+    margin-bottom: 11px;
+  }
+
+  .print-id-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 46%;
+    display: block;
+  }
+
+  .print-id-name {
+    margin: 0 0 2px;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .print-id-alias {
+    margin: 0 0 10px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: #94a3b8;
+  }
+
+  .print-id-rows {
+    display: grid;
+    gap: 5px;
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    padding-top: 9px;
+    margin-bottom: 10px;
+  }
+
+  .print-id-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 9.5px;
+  }
+
+  .print-id-row span {
+    color: #94a3b8;
+  }
+
+  .print-id-row strong {
+    color: #e2e8f0;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .print-id-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.34);
+    color: #6ee7b7;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 600;
+  }
+
+  .print-id-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #10b981;
+  }
+
+  /* Slide 2: About, Education, Focus & Tech Stack */
+  .print-slide2-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .print-about-copy {
+    margin: 0 0 10px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #cbd5e1;
+  }
+
+  .print-item-stack {
+    display: grid;
+    gap: 7px;
+  }
+
+  .print-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .print-mini-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .print-mini-logo img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .print-mini-copy {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .print-mini-copy h4 {
+    margin: 0 0 2px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+
+  .print-mini-copy p {
+    margin: 0;
+    font-size: 9px;
+    line-height: 1.35;
+    color: #cbd5e1;
+  }
+
+  .print-mini-date {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: #7dd3fc;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .print-design-pills {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .print-design-pill {
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+  }
+
+  .print-design-pill span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7dd3fc;
+    margin-bottom: 2px;
+  }
+
+  .print-design-pill strong {
+    display: block;
+    font-size: 9.5px;
+    color: #f8fafc;
+    line-height: 1.25;
+  }
+
+  .print-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  .print-tech-tile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  .print-tech-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .print-tech-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  .print-tech-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+
+  /* Slide 3 & 4: Projects Showcase Cards */
+  .print-project-featured {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 14px;
+    padding: 11px 13px;
+    align-items: center;
+  }
+
+  .print-projects-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .print-project-card-v {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .print-project-card-h {
+    display: grid;
+    grid-template-columns: 175px 1fr;
+    gap: 12px;
+    padding: 10px 12px;
+    align-items: center;
+  }
+
+  .print-project-thumb {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: #070b18;
+  }
+
+  .print-project-featured .print-project-thumb {
+    height: 158px;
+  }
+
+  .print-project-card-v .print-project-thumb {
+    height: 122px;
+    width: 100%;
+  }
+
+  .print-project-card-h .print-project-thumb {
+    height: 120px;
+    width: 100%;
+  }
+
+  .print-project-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+
+  .print-project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 3px;
+  }
+
+  .print-project-num {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    font-weight: 700;
+  }
+
+  .print-project-title {
+    margin: 0 0 4px;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .print-project-featured .print-project-title {
+    font-size: 16px;
+  }
+
+  .print-project-desc {
+    margin: 0 0 8px;
+    font-size: 9.5px;
+    line-height: 1.45;
+    color: #cbd5e1;
+  }
+
+  .print-project-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 7px;
+  }
+
+  .print-tech-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: #e2e8f0;
+  }
+
+  .print-tech-pill svg {
+    width: 10px;
+    height: 10px;
+    display: block;
+  }
+
+  .print-project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+  }
+
+  .print-project-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    color: #bae6fd !important;
+  }
+
+  /* Slide 4 Bottom: Learning Path + Static Spotify Card */
+  .print-slide4-bottom {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 12px;
+  }
+
+  .print-learning-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .print-learning-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 9px;
+    align-items: start;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+  }
+
+  .print-learning-badge {
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: rgba(99, 102, 241, 0.16);
+    border: 1px solid rgba(129, 140, 248, 0.34);
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    color: #c7d2fe;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+
+  .print-learning-row h4 {
+    margin: 0 0 2px;
+    font-size: 10px;
+    color: #f8fafc;
+  }
+
+  .print-learning-row p {
+    margin: 0;
+    font-size: 8.8px;
+    line-height: 1.38;
+    color: #cbd5e1;
+  }
+
+  .print-spotify-static {
+    background: linear-gradient(155deg, rgba(12, 24, 24, 0.96) 0%, rgba(9, 15, 28, 0.96) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.36);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .print-spotify-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .print-spotify-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.36);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: #6ee7b7;
+    font-weight: 700;
+  }
+
+  .print-spotify-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+  }
+
+  .print-spotify-bars span {
+    width: 3px;
+    border-radius: 2px;
+    background: #1db954;
+    display: block;
+  }
+
+  .print-spotify-title {
+    margin: 0 0 4px;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .print-spotify-desc {
+    margin: 0;
+    font-size: 9.2px;
+    line-height: 1.45;
+    color: #cbd5e1;
+  }
+
+  .print-spotify-linkbox {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(4, 7, 17, 0.72);
+    border: 1px solid rgba(16, 185, 129, 0.24);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    word-break: break-all;
+  }
+
+  .print-spotify-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .print-spotify-meta-row span {
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.24);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: #a7f3d0;
+  }
+
+  /* Slide 5: Contact & Collaboration */
+  .print-contact-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .print-contact-headline {
+    margin: 0 0 10px;
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 27px;
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    color: #ffffff;
+  }
+
+  .print-contact-copy {
+    margin: 0 0 16px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #cbd5e1;
+  }
+
+  .print-cta-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(44, 103, 237, 0.22), rgba(56, 189, 248, 0.14));
+    border: 1px solid rgba(125, 211, 252, 0.42);
+  }
+
+  .print-cta-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #7dd3fc;
+    margin-bottom: 3px;
+  }
+
+  .print-cta-value {
+    font-family: "Space Grotesk", "Work Sans", var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff !important;
+  }
+
+  .print-channels-stack {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .print-channel-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+  }
+
+  .print-channel-left strong {
+    display: block;
+    font-size: 11px;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+
+  .print-channel-left span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #94a3b8;
+  }
+
+  .print-channel-url {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: #7dd3fc !important;
+    text-align: right;
+  }
+
+  .print-deck-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .print-deck-index span {
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.78);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: #cbd5e1;
   }
 }

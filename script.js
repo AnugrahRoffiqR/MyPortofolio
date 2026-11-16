@@ -89,53 +89,43 @@ const PROJECTS = [
   },
 ];
 
-const DESIGN_ITEMS = [
+const CERTIFICATES = [
   {
-    meta: 'UI Systems & Figma',
-    title: 'Struktur Wireframe & Hierarki Visual',
-    desc: 'Merancang kerangka tata letak di Figma sebelum menulis kode CSS, memastikan konsistensi spasi, skala huruf, dan titik fokus utama setiap bagian halaman.',
-    tags: ['Figma', 'Visual Hierarchy', 'Typography Scale'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>',
+    id: 'cert-frontend',
+    title: 'Front-End Developer Tingkat Dasar',
+    meta: 'PPLG • Skillage Cert.',
+    score: 'Hard Skills 91 • Soft Skills 91',
+    desc: 'Pengembangan antarmuka web menggunakan HTML, CSS, JavaScript, serta dasar komponen dan routing React JS.',
+    frontImg: 'assets/cert-frontend.webp',
+    backImg: 'assets/cert-frontend-transcript.webp',
+    altFront: 'Sertifikat Uji Kompetensi Front-End Developer Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
+    altBack: 'Daftar Unit Kompetensi Front-End Developer Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
   },
   {
-    meta: 'Product UI',
-    title: 'Desain Dashboard & Kartu Aksi',
-    desc: 'Mengutamakan kejelasan informasi pada Manajemen Tugas Web: membedakan kartu ringkasan, lencana tenggat waktu, serta tombol tindakan sesuai peran pengguna.',
-    tags: ['Dashboard UX', 'Status Badges', 'Clarity'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+    id: 'cert-uiux',
+    title: 'UI/UX Designer Tingkat Dasar',
+    meta: 'PPLG • Skillage Cert.',
+    score: 'Hard Skills 85 • Soft Skills 86',
+    desc: 'Perancangan wireframe, antarmuka, komponen design system, dan prototipe interaktif menggunakan Figma.',
+    frontImg: 'assets/cert-uiux.webp',
+    backImg: 'assets/cert-uiux-transcript.webp',
+    altFront: 'Sertifikat Uji Kompetensi UI/UX Designer Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
+    altBack: 'Daftar Unit Kompetensi UI/UX Designer Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
   },
   {
-    meta: 'Responsive Craft',
-    title: 'Ergonomi Form & Mobile Adaptation',
-    desc: 'Memastikan ukuran area sentuh nyaman di ponsel, fokus keyboard terlihat jelas, dan grid beralih rapi tanpa pergeseran tata letak horizontal.',
-    tags: ['Mobile-First', 'Form UX', 'Accessibility'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>',
+    id: 'cert-excel',
+    title: 'Microsoft Excel Tingkat Dasar',
+    meta: 'Informatika • Skillage Cert.',
+    score: 'Hard Skills 87.4 • Soft Skills 84.5',
+    desc: 'Pengolahan data dan perhitungan dasar spreadsheet menggunakan fungsi logika, agregasi, dan analisis bersyarat.',
+    frontImg: 'assets/cert-excel.webp',
+    backImg: 'assets/cert-excel-transcript.webp',
+    altFront: 'Sertifikat Uji Kompetensi Microsoft Excel Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
+    altBack: 'Daftar Unit Kompetensi Microsoft Excel Tingkat Dasar atas nama Anugrah Roffiq Ramadhan',
   },
 ];
 
-const LEARNING_ITEMS = [
-  {
-    meta: 'Tahap 01 • Sekolah & Dasar',
-    title: 'Dasar Pemrograman & Web Semantik',
-    desc: 'Memulai perjalanan sebagai siswa PPLG di SMK Skill Village Islamic School dengan mempelajari struktur HTML5, gaya CSS Grid/Flexbox, dan logika dasar JavaScript.',
-    tags: ['HTML5', 'CSS3', 'DOM Logic'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>',
-  },
-  {
-    meta: 'Tahap 02 • Kolaborasi & Publikasi',
-    title: 'Alur Kerja Git & Publikasi Proyek',
-    desc: 'Membiasakan dokumentasi projek, pencatatan perubahan lewat Git/GitHub, serta merilis eksperimen landing page dan aplikasi ringan melalui GitHub Pages.',
-    tags: ['Git Workflow', 'GitHub Pages', 'Documentation'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" x2="6" y1="9" y2="21"/></svg>',
-  },
-  {
-    meta: 'Tahap 03 • Eksplorasi Fullstack & Gim',
-    title: 'Integrasi Backend & Eksplorasi Gim',
-    desc: 'Melangkah ke API server dasar dengan Express dan PostgreSQL pada Manajemen Tugas Web sembari terus mengeksplorasi minat di desain antarmuka dan pengembangan gim.',
-    tags: ['Express', 'PostgreSQL', 'Game Interest'],
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>',
-  },
-];
+const ACHIEVEMENTS = [];
 
 const TECH_STACK_LIST = [
   'HTML5',
@@ -2903,10 +2893,37 @@ function createIconSpan(name) {
   return TECH_ICONS[name] || '';
 }
 
+function renderCertificateCards(items, kindLabel) {
+  const overlaySvg = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M15 3h6v6"></path>
+      <path d="M10 14 21 3"></path>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+    </svg>`;
+
+  return items
+    .map(
+      (item, idx) => `
+      <article class="portfolio-cert-card" role="button" tabindex="0" data-cert-index="${idx}" aria-label="${kindLabel} ${item.title}">
+        <div class="portfolio-cert-preview">
+          <img
+            alt="${item.altFront || item.title}"
+            loading="lazy"
+            decoding="async"
+            class="skeleton-image portfolio-cert-preview-image"
+            src="${item.frontImg}"
+          >
+          <span class="portfolio-cert-preview-overlay">${kindLabel}${overlaySvg}</span>
+        </div>
+      </article>`,
+    )
+    .join('');
+}
+
 function renderPortfolio() {
   const projectsGrid = document.getElementById('projects-grid');
-  const designGrid = document.getElementById('design-grid');
-  const learningGrid = document.getElementById('learning-grid');
+  const certificatesGrid = document.getElementById('certificates-grid');
+  const achievementsGrid = document.getElementById('achievements-grid');
   const skillsGrid = document.getElementById('skills-grid');
 
   if (projectsGrid) {
@@ -2940,30 +2957,37 @@ function renderPortfolio() {
     ).join('');
   }
 
-  if (designGrid) {
-    designGrid.innerHTML = DESIGN_ITEMS.map(
-      (d) => `
-      <article class="portfolio-showcase-card">
-        <div class="portfolio-showcase-icon" aria-hidden="true">${d.icon}</div>
-        <span class="portfolio-showcase-meta">${d.meta}</span>
-        <h3>${d.title}</h3>
-        <p>${d.desc}</p>
-        <div class="portfolio-showcase-tags">${d.tags.map((t) => `<span>${t}</span>`).join('')}</div>
-      </article>`,
-    ).join('');
+  if (certificatesGrid) {
+    certificatesGrid.innerHTML = renderCertificateCards(CERTIFICATES, 'Lihat sertifikat');
   }
 
-  if (learningGrid) {
-    learningGrid.innerHTML = LEARNING_ITEMS.map(
-      (l) => `
-      <article class="portfolio-showcase-card">
-        <div class="portfolio-showcase-icon" aria-hidden="true">${l.icon}</div>
-        <span class="portfolio-showcase-meta">${l.meta}</span>
-        <h3>${l.title}</h3>
-        <p>${l.desc}</p>
-        <div class="portfolio-showcase-tags">${l.tags.map((t) => `<span>${t}</span>`).join('')}</div>
-      </article>`,
-    ).join('');
+  if (achievementsGrid) {
+    if (ACHIEVEMENTS.length > 0) {
+      achievementsGrid.className = 'portfolio-certificates-grid';
+      achievementsGrid.innerHTML = renderCertificateCards(ACHIEVEMENTS, 'Lihat piagam');
+    } else {
+      achievementsGrid.className = 'portfolio-achievements-empty';
+      achievementsGrid.innerHTML = `
+        <div class="portfolio-achievements-empty-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"></path>
+            <path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"></path>
+            <path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"></path>
+            <path d="M4 22h16"></path>
+            <path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"></path>
+            <path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"></path>
+          </svg>
+        </div>
+        <h3>Belum Ada Piagam / Prestasi</h3>
+        <p>Dokumentasi piagam lomba atau pencapaian akan ditambahkan di sini nanti. Saat ini sertifikat uji kompetensi saya dapat dilihat di tab Certificates.</p>
+        <button type="button" class="portfolio-achievements-empty-btn" data-switch-tab="certificates">
+          <span>Lihat Certificates</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>`;
+    }
   }
 
   if (skillsGrid) {
@@ -2990,32 +3014,191 @@ function renderPortfolio() {
   }
 }
 
+function initCertificateViewer() {
+  let backdropEl = null;
+  let activeIndex = 0;
+  let activeSide = 'front';
+  let lastTriggerEl = null;
+
+  function renderViewerContent() {
+    if (!backdropEl) return;
+    const cert = CERTIFICATES[activeIndex];
+    if (!cert) return;
+
+    const imgEl = backdropEl.querySelector('.portfolio-cert-viewer-image');
+    const dialogEl = backdropEl.querySelector('.portfolio-cert-viewer');
+    const frontBtn = backdropEl.querySelector('[data-cert-side="front"]');
+    const backBtn = backdropEl.querySelector('[data-cert-side="back"]');
+
+    const showingBack = activeSide === 'back' && Boolean(cert.backImg);
+    const targetSrc = showingBack ? cert.backImg : cert.frontImg;
+    const targetAlt = showingBack ? cert.altBack || cert.title : cert.altFront || cert.title;
+
+    if (imgEl) {
+      imgEl.src = targetSrc;
+      imgEl.alt = targetAlt;
+    }
+    if (dialogEl) {
+      dialogEl.setAttribute('aria-label', cert.title);
+    }
+    if (frontBtn) {
+      frontBtn.classList.toggle('is-active', !showingBack);
+      frontBtn.setAttribute('aria-pressed', String(!showingBack));
+    }
+    if (backBtn) {
+      backBtn.hidden = !cert.backImg;
+      backBtn.classList.toggle('is-active', showingBack);
+      backBtn.setAttribute('aria-pressed', String(showingBack));
+    }
+  }
+
+  function closeViewer() {
+    if (!backdropEl) return;
+    backdropEl.remove();
+    backdropEl = null;
+    document.body.style.overflow = '';
+    if (lastTriggerEl && typeof lastTriggerEl.focus === 'function') {
+      lastTriggerEl.focus();
+    }
+    lastTriggerEl = null;
+  }
+
+  function stepCertificate(delta) {
+    if (!CERTIFICATES.length) return;
+    activeIndex = (activeIndex + delta + CERTIFICATES.length) % CERTIFICATES.length;
+    activeSide = 'front';
+    renderViewerContent();
+  }
+
+  function openViewer(index, triggerEl) {
+    if (!CERTIFICATES[index]) return;
+    activeIndex = index;
+    activeSide = 'front';
+    lastTriggerEl = triggerEl || document.activeElement;
+
+    if (!backdropEl) {
+      backdropEl = document.createElement('div');
+      backdropEl.className = 'portfolio-cert-viewer-backdrop';
+      backdropEl.innerHTML = `
+        <button type="button" class="portfolio-cert-viewer-close" aria-label="Tutup sertifikat">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+        <div class="portfolio-cert-viewer" role="dialog" aria-modal="true" aria-label="Sertifikat">
+          <img class="portfolio-cert-viewer-image" alt="Sertifikat" decoding="async" src="">
+        </div>
+        <div class="portfolio-cert-viewer-controls" role="group" aria-label="Kontrol tampilan sertifikat">
+          <button type="button" class="portfolio-cert-viewer-nav-btn" data-cert-nav="-1" aria-label="Sertifikat sebelumnya">&#8592; Prev</button>
+          <button type="button" class="portfolio-cert-viewer-page-btn is-active" data-cert-side="front" aria-pressed="true">Sertifikat</button>
+          <button type="button" class="portfolio-cert-viewer-page-btn" data-cert-side="back" aria-pressed="false">Transkrip Nilai</button>
+          <button type="button" class="portfolio-cert-viewer-nav-btn" data-cert-nav="1" aria-label="Sertifikat berikutnya">Next &#8594;</button>
+        </div>`;
+
+      backdropEl.addEventListener('click', (e) => {
+        if (e.target === backdropEl || e.target.closest('.portfolio-cert-viewer-close')) {
+          AudioEngine.playClick(580, 0.05);
+          closeViewer();
+          return;
+        }
+        const sideBtn = e.target.closest('[data-cert-side]');
+        if (sideBtn) {
+          AudioEngine.playClick(720, 0.05);
+          activeSide = sideBtn.dataset.certSide;
+          renderViewerContent();
+          return;
+        }
+        const navBtn = e.target.closest('[data-cert-nav]');
+        if (navBtn) {
+          AudioEngine.playClick(700, 0.05);
+          stepCertificate(Number(navBtn.dataset.certNav));
+        }
+      });
+
+      document.body.appendChild(backdropEl);
+      document.body.style.overflow = 'hidden';
+      backdropEl.querySelector('.portfolio-cert-viewer-close')?.focus();
+    }
+
+    renderViewerContent();
+  }
+
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.portfolio-cert-card');
+    if (card && card.dataset.certIndex !== undefined) {
+      AudioEngine.playClick(780, 0.06);
+      openViewer(Number(card.dataset.certIndex), card);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (backdropEl) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeViewer();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        stepCertificate(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        stepCertificate(1);
+      }
+      return;
+    }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      const card = e.target.closest?.('.portfolio-cert-card');
+      if (card && card.dataset.certIndex !== undefined) {
+        e.preventDefault();
+        AudioEngine.playClick(780, 0.06);
+        openViewer(Number(card.dataset.certIndex), card);
+      }
+    }
+  });
+}
+
 function initTabsAndDetailView() {
   const tabBtns = [...document.querySelectorAll('.portfolio-tab-btn')];
   const panels = {
     projects: document.getElementById('tab-projects'),
-    design: document.getElementById('tab-design'),
-    learning: document.getElementById('tab-learning'),
+    certificates: document.getElementById('tab-certificates'),
+    achievements: document.getElementById('tab-achievements'),
     tech: document.getElementById('tab-tech'),
   };
+
+  function activateTab(tabKey) {
+    const targetBtn = tabBtns.find((b) => b.dataset.tab === tabKey);
+    if (!targetBtn) return;
+
+    tabBtns.forEach((b) => {
+      const isActive = b === targetBtn;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-selected', String(isActive));
+    });
+    Object.entries(panels).forEach(([k, panel]) => {
+      if (!panel) return;
+      const active = k === tabKey;
+      panel.hidden = !active;
+      if (active) panel.classList.add('is-revealed');
+    });
+  }
 
   tabBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       AudioEngine.playClick(740, 0.05);
-      const tabKey = btn.dataset.tab;
-      tabBtns.forEach((b) => {
-        const isActive = b === btn;
-        b.classList.toggle('is-active', isActive);
-        b.setAttribute('aria-selected', String(isActive));
-      });
-      Object.entries(panels).forEach(([k, panel]) => {
-        if (!panel) return;
-        const active = k === tabKey;
-        panel.hidden = !active;
-        if (active) panel.classList.add('is-revealed');
-      });
+      activateTab(btn.dataset.tab);
     });
   });
+
+  document.getElementById('achievements-grid')?.addEventListener('click', (e) => {
+    const switchBtn = e.target.closest('[data-switch-tab]');
+    if (!switchBtn) return;
+    AudioEngine.playClick(740, 0.05);
+    activateTab(switchBtn.dataset.switchTab);
+  });
+
+  initCertificateViewer();
 
   // Project Detail View
   const homeView = document.getElementById('home-main-view');
@@ -3511,6 +3694,431 @@ function initContactAndComments() {
 }
 
 /* ========================================================================
+   Dedicated Print / PDF Portfolio Deck (A4 Landscape, 5 Slides)
+   ======================================================================== */
+function escapePrintHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatPrintUrl(url) {
+  return String(url ?? '')
+    .replace(/^https?:\/\//i, '')
+    .replace(/\/$/, '');
+}
+
+function extractGroupCards(groupEl) {
+  if (!groupEl) return [];
+  return [...groupEl.querySelectorAll('.experience-card')].map((card) => ({
+    logoSrc: card.querySelector('.experience-logo img')?.getAttribute('src') || '',
+    logoAlt: card.querySelector('.experience-logo img')?.getAttribute('alt') || '',
+    title: card.querySelector('h3')?.textContent?.trim() || '',
+    desc: card.querySelector('p')?.textContent?.trim() || '',
+    date: card.querySelector('.experience-date')?.textContent?.trim() || '',
+  }));
+}
+
+function extractPrintProfileData() {
+  const experienceGroups = [...document.querySelectorAll('.experience-columns .experience-group')];
+  const heroDesc = document.querySelector('.hero-description-copy')?.textContent?.trim() || '';
+  const aboutParas = [...document.querySelectorAll('.about-copy p')]
+    .map((p) => p.textContent?.trim())
+    .filter(Boolean);
+
+  const stats = [...document.querySelectorAll('.experience-stat-card')].map((card) => ({
+    value: card.querySelector('strong')?.textContent?.trim() || '',
+    label: card.querySelector('h3')?.textContent?.trim() || '',
+    desc: card.querySelector('p')?.textContent?.trim() || '',
+  }));
+
+  const socials = [...document.querySelectorAll('.contact-social-card')].map((card) => ({
+    href: card.getAttribute('href') || '',
+    label: card.querySelector('.contact-social-label')?.textContent?.trim() || '',
+    sub: card.querySelector('.contact-social-sub')?.textContent?.trim() || '',
+  }));
+
+  const spotifyLink = document.getElementById('spotify-open-link')?.getAttribute('href') || '';
+  const spotifyTitleRaw = document.getElementById('spotify-embed-frame')?.getAttribute('title') || 'Focus Coding';
+  const spotifyTitle =
+    spotifyTitleRaw
+      .replace(/^Spotify playlist:\s*/i, '')
+      .replace(/\s+by\s+.*$/i, '')
+      .trim() || 'Focus Coding';
+  const spotifyDesc = document.querySelector('.spotify-description')?.textContent?.trim() || '';
+
+  return {
+    heroDesc,
+    aboutParas,
+    educationItems: extractGroupCards(experienceGroups[0]),
+    focusItems: extractGroupCards(experienceGroups[1]),
+    stats,
+    socials,
+    spotifyLink,
+    spotifyTitle,
+    spotifyDesc,
+  };
+}
+
+function renderPrintExperienceList(items) {
+  return items
+    .map(
+      (item) => `
+      <div class="print-mini-item">
+        ${
+          item.logoSrc
+            ? `<div class="print-mini-logo"><img src="${escapePrintHtml(item.logoSrc)}" alt="${escapePrintHtml(item.logoAlt)}" loading="eager" decoding="sync"></div>`
+            : ''
+        }
+        <div class="print-mini-copy">
+          <h4>${escapePrintHtml(item.title)}</h4>
+          <p>${escapePrintHtml(item.desc)}</p>
+        </div>
+        ${item.date ? `<span class="print-mini-date">${escapePrintHtml(item.date)}</span>` : ''}
+      </div>`,
+    )
+    .join('');
+}
+
+function renderPrintProjectCard(project, index, variant) {
+  const numLabel = String(index + 1).padStart(2, '0');
+  const cardClass =
+    variant === 'featured'
+      ? 'print-card print-project-featured'
+      : variant === 'horizontal'
+        ? 'print-card print-project-card-h'
+        : 'print-card print-project-card-v';
+
+  const description = variant === 'featured' ? project.fullDesc : project.shortDesc;
+  const links = [];
+  if (project.liveUrl) {
+    links.push(
+      `<a href="${escapePrintHtml(project.liveUrl)}">Live: ${escapePrintHtml(formatPrintUrl(project.liveUrl))}</a>`,
+    );
+  }
+  if (project.repoUrl) {
+    links.push(
+      `<a href="${escapePrintHtml(project.repoUrl)}">Repo: ${escapePrintHtml(formatPrintUrl(project.repoUrl))}</a>`,
+    );
+  }
+
+  const metaBadge = variant === 'featured' ? `${numLabel} • FEATURED PROJECT` : `${numLabel} • WEB PROJECT`;
+  const techHtml = (project.tech || [])
+    .map((techName) => `<span class="print-tech-pill">${createIconSpan(techName)}${escapePrintHtml(techName)}</span>`)
+    .join('');
+
+  return `
+    <article class="${cardClass}">
+      <div class="print-project-thumb">
+        <img src="${escapePrintHtml(project.thumbnail)}" alt="${escapePrintHtml(project.title)}" loading="eager" decoding="sync">
+      </div>
+      <div>
+        <div class="print-project-meta">
+          <span class="print-project-num">${metaBadge}</span>
+        </div>
+        <h3 class="print-project-title">${escapePrintHtml(project.title)}</h3>
+        <p class="print-project-desc">${escapePrintHtml(description)}</p>
+        <div class="print-project-techs">${techHtml}</div>
+        <div class="print-project-links">${links.join('')}</div>
+      </div>
+    </article>`;
+}
+
+function wrapPrintSlide({ pageNum, total, railTitle, eyebrow, title, subtitle, bodyHtml }) {
+  const pageTag = `${String(pageNum).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+  const headerHtml = title
+    ? `
+      <header class="print-slide-header">
+        <div>
+          ${eyebrow ? `<p class="print-eyebrow">${escapePrintHtml(eyebrow)}</p>` : ''}
+          <h2 class="print-slide-title">${escapePrintHtml(title)}</h2>
+        </div>
+        ${subtitle ? `<p class="print-slide-subtitle">${escapePrintHtml(subtitle)}</p>` : ''}
+      </header>`
+    : '';
+
+  return `
+    <section class="print-slide" data-print-slide="${pageNum}">
+      <div class="print-slide-rail">
+        <span class="print-rail-brand">
+          <span class="print-rail-dot" aria-hidden="true"></span>
+          <span>NUGI.DEV // PORTFOLIO DECK</span>
+        </span>
+        <span class="print-rail-meta">
+          <span>${escapePrintHtml(railTitle)}</span>
+          <span class="print-page-pill">${pageTag}</span>
+        </span>
+      </div>
+
+      <div class="print-slide-main">
+        ${headerHtml}
+        ${bodyHtml}
+      </div>
+
+      <footer class="print-slide-footer">
+        <span>Anugrah Roffiq Ramadhan (Nugi) • Cikarang Barat, Bekasi</span>
+        <span class="print-slide-footer-links">
+          <a href="mailto:${escapePrintHtml(EMAIL_ADDRESS)}">${escapePrintHtml(EMAIL_ADDRESS)}</a>
+          <a href="https://github.com/AnugrahRoffiqR">github.com/AnugrahRoffiqR</a>
+        </span>
+      </footer>
+    </section>`;
+}
+
+function initPrintDeck() {
+  const deckEl = document.getElementById('print-portfolio-deck');
+  if (!deckEl) return;
+
+  const data = extractPrintProfileData();
+  const totalSlides = 5;
+
+  const statsHtml = data.stats
+    .map(
+      (s) => `
+      <div class="print-stat-box">
+        <strong>${escapePrintHtml(s.value)}</strong>
+        <span>${escapePrintHtml(s.label)}</span>
+        <p>${escapePrintHtml(s.desc)}</p>
+      </div>`,
+    )
+    .join('');
+
+  const quickLinksHtml = data.socials
+    .map(
+      (s) =>
+        `<a class="print-chip-link" href="${escapePrintHtml(s.href)}">${escapePrintHtml(s.label)}: ${escapePrintHtml(s.sub)}</a>`,
+    )
+    .join('');
+
+  const slide1Body = `
+    <div class="print-cover-grid">
+      <div>
+        <div class="print-cover-pill">
+          <span>PORTFOLIO DECK 2026</span>
+          <span>•</span>
+          <span>PPLG STUDENT • BEKASI</span>
+        </div>
+        <h1 class="print-cover-name">
+          Anugrah Roffiq
+          <span class="print-cover-name-accent">Ramadhan (Nugi)</span>
+        </h1>
+        <p class="print-cover-role">Web Developer &bull; UI/UX Designer &bull; Software &amp; Game Exploration</p>
+        <p class="print-cover-bio">${escapePrintHtml(data.heroDesc)}</p>
+        <div class="print-cover-stats">${statsHtml}</div>
+        <div class="print-cover-tags">
+          <a class="print-chip-link" href="mailto:${escapePrintHtml(EMAIL_ADDRESS)}">Email: ${escapePrintHtml(EMAIL_ADDRESS)}</a>
+          ${quickLinksHtml}
+        </div>
+      </div>
+
+      <aside class="print-id-card" aria-label="Static Archival ID Card">
+        <div class="print-id-notch" aria-hidden="true"></div>
+        <div class="print-id-top">
+          <span>CREATOR ARCHIVE ID</span>
+          <span>#PPLG-001</span>
+        </div>
+        <div class="print-id-portrait-wrap">
+          <img class="print-id-portrait" src="assets/portrait-about.webp" alt="Potret Anugrah Roffiq Ramadhan" loading="eager" decoding="sync">
+        </div>
+        <h2 class="print-id-name">Anugrah Roffiq Ramadhan</h2>
+        <p class="print-id-alias">Nugi &bull; @cynicc___ &bull; Bekasi, Indonesia</p>
+        <div class="print-id-rows">
+          <div class="print-id-row"><span>Sekolah</span><strong>SMK Skill Village Islamic School</strong></div>
+          <div class="print-id-row"><span>Jurusan</span><strong>PPLG (Software &amp; Game Dev)</strong></div>
+          <div class="print-id-row"><span>Fokus</span><strong>Web Frontend, Backend &amp; UI/UX</strong></div>
+        </div>
+        <span class="print-id-status">
+          <span class="print-id-status-dot" aria-hidden="true"></span>
+          <span>Ready for Collaboration &amp; Projects</span>
+        </span>
+      </aside>
+    </div>`;
+
+  const designPillsHtml = CERTIFICATES.map(
+    (c) => `
+      <div class="print-design-pill">
+        <span>${escapePrintHtml(c.meta)}</span>
+        <strong>${escapePrintHtml(c.title)}</strong>
+      </div>`,
+  ).join('');
+
+  const techGridHtml = TECH_STACK_LIST.map(
+    (name) => `
+      <div class="print-tech-tile">
+        <span class="print-tech-icon" aria-hidden="true">${createIconSpan(name)}</span>
+        <span class="print-tech-name">${escapePrintHtml(name)}</span>
+      </div>`,
+  ).join('');
+
+  const slide2Body = `
+    <div class="print-slide2-top">
+      <div class="print-card">
+        <p class="print-section-label">About &amp; Education</p>
+        <p class="print-about-copy">${escapePrintHtml(data.aboutParas.join(' '))}</p>
+        <div class="print-item-stack">${renderPrintExperienceList(data.educationItems)}</div>
+      </div>
+
+      <div class="print-card">
+        <p class="print-section-label">Focus Areas &amp; Competency Certificates</p>
+        <div class="print-item-stack">${renderPrintExperienceList(data.focusItems)}</div>
+        <div class="print-design-pills">${designPillsHtml}</div>
+      </div>
+    </div>
+
+    <div class="print-card">
+      <p class="print-section-label">Technical Stack &amp; Tools (${TECH_STACK_LIST.length} Core Technologies)</p>
+      <div class="print-tech-grid">${techGridHtml}</div>
+    </div>`;
+
+  const slide3Body = `
+    ${PROJECTS[0] ? renderPrintProjectCard(PROJECTS[0], 0, 'featured') : ''}
+    <div class="print-projects-row2">
+      ${PROJECTS[1] ? renderPrintProjectCard(PROJECTS[1], 1, 'vertical') : ''}
+      ${PROJECTS[2] ? renderPrintProjectCard(PROJECTS[2], 2, 'vertical') : ''}
+    </div>`;
+
+  const learningHtml = CERTIFICATES.map(
+    (item) => `
+      <div class="print-learning-row">
+        <span class="print-learning-badge">${escapePrintHtml(item.score)}</span>
+        <div>
+          <h4>${escapePrintHtml(item.title)}</h4>
+          <p>${escapePrintHtml(item.desc)}</p>
+        </div>
+      </div>`,
+  ).join('');
+
+  const slide4Body = `
+    <div class="print-projects-row2">
+      ${PROJECTS[3] ? renderPrintProjectCard(PROJECTS[3], 3, 'horizontal') : ''}
+      ${PROJECTS[4] ? renderPrintProjectCard(PROJECTS[4], 4, 'horizontal') : ''}
+    </div>
+
+    <div class="print-slide4-bottom">
+      <div class="print-card">
+        <p class="print-section-label">Verified Certificates &amp; Scores</p>
+        <div class="print-learning-list">${learningHtml}</div>
+      </div>
+
+      <aside class="print-card print-spotify-static">
+        <div>
+          <div class="print-spotify-head">
+            <span class="print-spotify-pill">SPOTIFY PLAYLIST • STATIC SUMMARY</span>
+            <span class="print-spotify-bars" aria-hidden="true">
+              <span style="height: 7px;"></span>
+              <span style="height: 14px;"></span>
+              <span style="height: 10px;"></span>
+              <span style="height: 16px;"></span>
+              <span style="height: 9px;"></span>
+            </span>
+          </div>
+          <h3 class="print-spotify-title" style="margin-top: 8px;">${escapePrintHtml(data.spotifyTitle)}</h3>
+          <p class="print-spotify-desc">${escapePrintHtml(data.spotifyDesc)}</p>
+          <div class="print-spotify-meta-row">
+            <span>Static Audio Summary</span>
+            <span>Spotify Embed Replaced for Clean PDF</span>
+          </div>
+        </div>
+        <div class="print-spotify-linkbox">
+          <span style="display:block;color:#94a3b8;margin-bottom:3px;">Playlist URL (Web player interactive mode):</span>
+          <a href="${escapePrintHtml(data.spotifyLink)}">${escapePrintHtml(data.spotifyLink)}</a>
+        </div>
+      </aside>
+    </div>`;
+
+  const channelCardsHtml = data.socials
+    .map(
+      (s) => `
+      <a class="print-channel-card" href="${escapePrintHtml(s.href)}">
+        <span class="print-channel-left">
+          <strong>${escapePrintHtml(s.label)}</strong>
+          <span>${escapePrintHtml(s.sub)}</span>
+        </span>
+        <span class="print-channel-url">${escapePrintHtml(formatPrintUrl(s.href))}</span>
+      </a>`,
+    )
+    .join('');
+
+  const slide5Body = `
+    <div class="print-contact-grid">
+      <div>
+        <p class="print-eyebrow">OPEN FOR COLLABORATION &amp; OPPORTUNITIES</p>
+        <h2 class="print-contact-headline">Mari berkolaborasi membangun produk web yang rapi, cepat, dan fungsional.</h2>
+        <p class="print-contact-copy">
+          Saya terbuka untuk diskusi proyek web development, eksplorasi desain UI/UX di Figma, kolaborasi tim pelajar maupun klien, serta kesempatan praktik industri (PKL/magang) di bidang Software &amp; Web Engineering.
+        </p>
+        <a class="print-cta-box" href="mailto:${escapePrintHtml(EMAIL_ADDRESS)}">
+          <span>
+            <span class="print-cta-label">Primary Email Contact</span>
+            <span class="print-cta-value">${escapePrintHtml(EMAIL_ADDRESS)}</span>
+          </span>
+          <span class="print-page-pill">SEND EMAIL</span>
+        </a>
+      </div>
+
+      <div>
+        <div class="print-card" style="margin-bottom: 10px;">
+          <p class="print-section-label">Verified Social &amp; Code Channels</p>
+          <div class="print-channels-stack">${channelCardsHtml}</div>
+        </div>
+
+        <div class="print-card">
+          <p class="print-section-label">Portfolio Deck Index</p>
+          <div class="print-deck-index">
+            <span>01 Cover &amp; ID Profile</span>
+            <span>02 Education &amp; Tech Stack</span>
+            <span>03 Projects (01–03)</span>
+            <span>04 Projects (04–05) &amp; Learning</span>
+            <span>05 Direct Contact</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  deckEl.innerHTML = [
+    wrapPrintSlide({ pageNum: 1, total: totalSlides, railTitle: 'COVER & PROFILE SUMMARY', bodyHtml: slide1Body }),
+    wrapPrintSlide({
+      pageNum: 2,
+      total: totalSlides,
+      railTitle: 'PROFILE, EDUCATION & STACK',
+      eyebrow: 'BACKGROUND & CAPABILITIES',
+      title: 'Education, Focus & Tech Stack',
+      subtitle: 'Ringkasan latar belakang pendidikan PPLG, fokus pengembangan antarmuka, dan perangkat kerja utama.',
+      bodyHtml: slide2Body,
+    }),
+    wrapPrintSlide({
+      pageNum: 3,
+      total: totalSlides,
+      railTitle: 'FEATURED WEB PROJECTS (1/2)',
+      eyebrow: 'SELECTED WORKS',
+      title: 'Featured Web Projects',
+      subtitle: 'Aplikasi dan landing page pilihan lengkap dengan pratinjau antarmuka serta tautan repositori.',
+      bodyHtml: slide3Body,
+    }),
+    wrapPrintSlide({
+      pageNum: 4,
+      total: totalSlides,
+      railTitle: 'MORE PROJECTS & LEARNING PATH (2/2)',
+      eyebrow: 'EXPERIMENTS & JOURNEY',
+      title: 'More Projects, Learning Path & Vibe',
+      subtitle: 'Eksperimen UI interaktif lanjutan, fondasi pembelajaran PPLG, serta ringkasan statis Focus Coding.',
+      bodyHtml: slide4Body,
+    }),
+    wrapPrintSlide({
+      pageNum: 5,
+      total: totalSlides,
+      railTitle: 'CONTACT & LINKS',
+      bodyHtml: slide5Body,
+    }),
+  ].join('');
+
+  deckEl.dataset.ready = 'true';
+}
+
+/* ========================================================================
    Boot
    ======================================================================== */
 function boot() {
@@ -3528,6 +4136,14 @@ function boot() {
   initSpotifyEmbed();
   initContactAndComments();
   initScrollReveal();
+  initPrintDeck();
+
+  window.addEventListener('beforeprint', () => {
+    const deck = document.getElementById('print-portfolio-deck');
+    if (deck && deck.dataset.ready !== 'true') {
+      initPrintDeck();
+    }
+  });
 }
 
 if (document.readyState === 'loading') {
